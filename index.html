@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giacomo Colomer — Créateur UGC à Nîmes</title>
+  <meta name="description" content="Créateur de contenu UGC basé à Nîmes : vidéos authentiques pour marques e-commerce et DNVB. Sport, grooming, jeux de société, famille, tech.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="nav">
+    <a href="#top" class="nav__logo">GIACOMO<span>.</span>UGC</a>
+    <nav class="nav__links">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#resultats">Résultats</a>
+      <a href="#univers">Univers</a>
+      <a href="#contact" class="btn btn--small" data-contact>Me contacter</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__text">
+        <p class="eyebrow">Créateur de contenu UGC · Nîmes</p>
+        <h1>Du contenu<br>qui sonne <em>vrai.</em></h1>
+        <p class="hero__lead">
+          Pas des mises en scène d'influenceur. Plutôt la vie d'un mec normal qui teste,
+          qui rigole, qui rate parfois, et qui parle de ton produit comme il en parlerait à un pote.
+        </p>
+        <div class="hero__cta">
+          <a href="#contact" class="btn" data-contact>Travaillons ensemble</a>
+          <a href="#portfolio" class="btn btn--ghost">Voir mes vidéos</a>
+        </div>
+        <p class="hero__dispo"><span class="dot"></span> Disponible pour de nouveaux tournages</p>
+      </div>
+      <div class="hero__visual">
+        <div class="phone">
+          <video class="phone__video" src="videos/hero-cocorico.mp4" poster="images/videos/7431627558686760961.jpg"
+                 autoplay muted loop playsinline aria-label="Giacomo en tournage devant une fontaine à Nîmes"></video>
+        </div>
+        <div class="sticker sticker--1">🥊 Coach de boxe</div>
+        <div class="sticker sticker--2">🎲 500+ jeux de société</div>
+      </div>
+    </section>
+
+    <!-- BANDEAU MARQUES -->
+    <section class="brands">
+      <p>Ils m'ont fait confiance</p>
+      <ul>
+        <li>Yaqua Games</li>
+        <li>Weenect</li>
+        <li>Monsieur Barbier</li>
+        <li>Soya</li>
+        <li>Caats</li>
+        <li>Total 10</li>
+        <li>Pili Pili</li>
+      </ul>
+    </section>
+
+    <!-- RÉSULTATS -->
+    <section class="section" id="resultats">
+      <p class="eyebrow">Des chiffres, pas des promesses</p>
+      <h2>Des vidéos pensées pour convertir</h2>
+      <div class="stats">
+        <article class="stat">
+          <strong>436K</strong>
+          <span>impressions pour une vidéo Yaqua Games, diffusée sans interruption plus d'un mois</span>
+        </article>
+        <article class="stat">
+          <strong>31K+</strong>
+          <span>clics générés par cette même publicité</span>
+        </article>
+        <article class="stat">
+          <strong>Top 8%</strong>
+          <span>des 569 publicités actives de la marque Soya</span>
+        </article>
+        <article class="stat">
+          <strong>1er €</strong>
+          <span>rentabilisé dès le premier euro investi pour des pros de la clim et des pompes à chaleur</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section class="section section--dark" id="portfolio">
+      <p class="eyebrow">Portfolio</p>
+      <h2>Quelques tournages</h2>
+      <div class="videos">
+        <!-- Chaque vidéo = un post LinkedIn : data-post = numéro du post (urn:li:activity:…) -->
+        <button class="video" data-post="7516141978548396032">
+          <span class="video__frame">
+            <img src="images/videos/7516141978548396032.jpg" alt="Vidéo Pili Pili Extra Spicy" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:12</span>
+          </span>
+          <span class="video__legende"><b>Pili Pili Extra Spicy</b> Jeu de société · Format déjanté</span>
+        </button>
+        <button class="video" data-post="7482682933934411776">
+          <span class="video__frame">
+            <img src="images/videos/7482682933934411776.jpg" alt="Vidéo Total 10" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:48</span>
+          </span>
+          <span class="video__legende"><b>Total 10</b> Jeu de société · Ma 1re collab JDS</span>
+        </button>
+        <button class="video" data-post="7515692281241182208">
+          <span class="video__frame">
+            <img src="images/videos/7515692281241182208.jpg" alt="Vidéo Climatisation" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:32</span>
+          </span>
+          <span class="video__legende"><b>Climatisation</b> Habitat · Rentable dès le 1er €</span>
+        </button>
+        <button class="video" data-post="7470030329194573824">
+          <span class="video__frame">
+            <img src="images/videos/7470030329194573824.jpg" alt="Vidéo Caats" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:48</span>
+          </span>
+          <span class="video__legende"><b>Caats</b> Animaux · Hook « J'étais sceptique »</span>
+        </button>
+        <button class="video" data-post="7472997500841340928">
+          <span class="video__frame">
+            <img src="images/videos/7472997500841340928.jpg" alt="Vidéo Sport & boxe" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:47</span>
+          </span>
+          <span class="video__legende"><b>Sport & boxe</b> Sport · Le hook comme un crochet</span>
+        </button>
+        <button class="video" data-post="7458417975474184193">
+          <span class="video__frame">
+            <img src="images/videos/7458417975474184193.jpg" alt="Vidéo Collab en famille" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:55</span>
+          </span>
+          <span class="video__legende"><b>Collab en famille</b> Famille · Tourné avec mon fils</span>
+        </button>
+        <button class="video" data-post="7444281048185602048">
+          <span class="video__frame">
+            <img src="images/videos/7444281048185602048.jpg" alt="Vidéo Pub animaux" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:27</span>
+          </span>
+          <span class="video__legende"><b>Pub animaux</b> Animaux · Hook et storytelling</span>
+        </button>
+        <button class="video" data-post="7431627558686760961">
+          <span class="video__frame">
+            <img src="images/videos/7431627558686760961.jpg" alt="Vidéo Cocorico" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:16</span>
+          </span>
+          <span class="video__legende"><b>Cocorico</b> Mode made in France · Unboxing</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- MISSIONS -->
+    <section class="section">
+      <p class="eyebrow">De A à Z</p>
+      <h2>Ce que je prends en charge</h2>
+      <div class="steps">
+        <article class="step"><span>✍️</span><h3>Le script</h3><p>Des scripts pensés pour la conversion, avec un hook qui arrête le scroll.</p></article>
+        <article class="step"><span>🎬</span><h3>Le tournage</h3><p>Du contenu authentique, un son propre, un angle clair.</p></article>
+        <article class="step"><span>✂️</span><h3>Le montage</h3><p>Je monte moi-même mes vidéos, du rythme jusqu'à l'appel à l'action.</p></article>
+        <article class="step"><span>📈</span><h3>Le suivi</h3><p>Après diffusion, on regarde les chiffres ensemble et on réajuste si besoin.</p></article>
+      </div>
+      <p class="steps__note">
+        Manager et chef de projet depuis 2014 : je sais structurer, prioriser,
+        tenir les délais et communiquer clairement. Avec moi, un brief est un brief.
+      </p>
+    </section>
+
+    <!-- POURQUOI MOI -->
+    <section class="section">
+      <p class="eyebrow">La méthode du ring</p>
+      <h2>Tourner une pub, c'est le même combat</h2>
+      <div class="cards">
+        <article class="card">
+          <span class="card__num">01</span>
+          <h3>Le hook</h3>
+          <p>C'est le crochet du gauche. Si tu rates ta cible dans les 2 premières secondes, l'utilisateur a déjà scrollé.</p>
+        </article>
+        <article class="card">
+          <span class="card__num">02</span>
+          <h3>La structure</h3>
+          <p>On n'improvise pas une combinaison. Chaque plan, chaque phrase est pensé pour une seule chose : la conversion.</p>
+        </article>
+        <article class="card">
+          <span class="card__num">03</span>
+          <h3>La régularité</h3>
+          <p>Respecter les briefs, livrer des rendus carrés, et assurer un vrai suivi après diffusion : perfs, retours, réajustements.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- UNIVERS -->
+    <section class="section section--accent" id="univers">
+      <p class="eyebrow">Un profil multi-facettes</p>
+      <h2>Mes univers</h2>
+      <ul class="tags">
+        <li>🥊 Sport & fitness</li>
+        <li>🧔 Grooming & lifestyle masculin</li>
+        <li>🎲 Jeux de société</li>
+        <li>🐾 Animaux</li>
+        <li>👨‍👩‍👧 Famille</li>
+        <li>📱 Tech & objets connectés</li>
+        <li>🏠 Habitat : couverture, clim, pompes à chaleur</li>
+      </ul>
+      <p class="univers__note">
+        Coach de boxe et kickboxing, collectionneur de jeux de société depuis une dizaine d'années :
+        quand je parle de ces sujets, c'est avec la crédibilité de quelqu'un qui les connaît vraiment,
+        pas d'un créateur qui récite un script.
+      </p>
+    </section>
+
+    <!-- DUO -->
+    <section class="section duo">
+      <div class="duo__visual">
+        <button class="video" data-post="7502976717804793856">
+          <span class="video__frame">
+            <img src="images/videos/7502976717804793856.jpg" alt="Vidéo de Giacomo et Clémentine" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:20</span>
+          </span>
+        </button>
+      </div>
+      <div>
+        <p class="eyebrow">Format couple & famille</p>
+        <h2>On tourne aussi en duo</h2>
+        <p>
+          Je tourne avec ma compagne Clémentine, elle-même créatrice UGC, pour les marques
+          qui cherchent un format couple ou famille. (Petit secret : elle fait ses prises
+          en 2 essais, moi en 10. 🙃)
+        </p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section section--dark contact" id="contact">
+      <p class="eyebrow">Contact</p>
+      <h2>Besoin de nouveaux visages ?<br>Je suis dispo 🫡</h2>
+      <p>Envoie-moi ton brief, on regarde ensemble comment donner du punch à tes pubs.</p>
+      <div class="hero__cta">
+        <a href="#contact" class="btn" data-contact>Envoyer mon brief</a>
+        <a href="https://www.linkedin.com/in/giacomo-colomer-5927a3399/" class="btn btn--ghost" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <p class="contact__mail">ou directement : <a href="mailto:giacomo.ugc@gmail.com">giacomo.ugc@gmail.com</a></p>
+    </section>
+
+  </main>
+
+  <!-- FORMULAIRE DE CONTACT -->
+  <dialog class="formulaire" id="formulaire">
+    <button class="formulaire__fermer" aria-label="Fermer">✕</button>
+    <!-- Envoi par FormSubmit : les messages arrivent sur giacomo.ugc@gmail.com -->
+    <form id="form-contact" action="https://formsubmit.co/giacomo.ugc@gmail.com" method="POST">
+      <p class="eyebrow">Contact</p>
+      <h2>Parle-moi de ton projet</h2>
+
+      <input type="hidden" name="_subject" value="Nouveau brief depuis le portfolio UGC">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="_honey" class="piege" tabindex="-1" autocomplete="off">
+
+      <div class="champs">
+        <label>Prénom et nom *
+          <input type="text" name="Nom" required autocomplete="name">
+        </label>
+        <label>Marque / entreprise
+          <input type="text" name="Marque" autocomplete="organization">
+        </label>
+        <label>E-mail *
+          <input type="email" name="email" required autocomplete="email">
+        </label>
+        <label>Type de projet
+          <select name="Projet">
+            <option>Vidéo(s) UGC pour la pub</option>
+            <option>Vidéo(s) UGC pour les réseaux</option>
+            <option>Format duo / couple / famille</option>
+            <option>Autre chose</option>
+          </select>
+        </label>
+        <label class="champs__large">Ton brief *
+          <textarea name="Message" rows="5" required placeholder="Le produit, l'objectif, le nombre de vidéos, les délais…"></textarea>
+        </label>
+      </div>
+
+      <button type="submit" class="btn">Envoyer</button>
+      <p class="formulaire__statut" role="status"></p>
+    </form>
+  </dialog>
+
+  <!-- LECTEUR LINKEDIN -->
+  <dialog class="lecteur" id="lecteur">
+    <button class="lecteur__fermer" aria-label="Fermer">✕</button>
+    <iframe title="Vidéo LinkedIn de Giacomo" allowfullscreen></iframe>
+  </dialog>
+
+  <footer class="footer">
+    <p>© 2026 Giacomo Colomer · Créateur UGC · Nîmes, Occitanie</p>
+  </footer>
+
+  <script>
+    const lecteur = document.getElementById('lecteur');
+    const iframe = lecteur.querySelector('iframe');
+
+    document.querySelectorAll('[data-post]').forEach((bouton) => {
+      bouton.addEventListener('click', () => {
+        iframe.src = 'https://www.linkedin.com/embed/feed/update/urn:li:activity:' + bouton.dataset.post + '?compact=1';
+        lecteur.showModal();
+      });
+    });
+
+    // Fermer : bouton ✕, touche Échap ou clic à côté du lecteur
+    lecteur.querySelector('.lecteur__fermer').addEventListener('click', () => lecteur.close());
+    lecteur.addEventListener('click', (e) => { if (e.target === lecteur) lecteur.close(); });
+    lecteur.addEventListener('close', () => { iframe.src = ''; });
+
+    // Formulaire de contact
+    const formulaire = document.getElementById('formulaire');
+    const form = document.getElementById('form-contact');
+    const statut = form.querySelector('.formulaire__statut');
+
+    document.querySelectorAll('[data-contact]').forEach((lien) => {
+      lien.addEventListener('click', (e) => {
+        e.preventDefault();
+        formulaire.showModal();
+      });
+    });
+    formulaire.querySelector('.formulaire__fermer').addEventListener('click', () => formulaire.close());
+    formulaire.addEventListener('click', (e) => { if (e.target === formulaire) formulaire.close(); });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bouton = form.querySelector('button[type="submit"]');
+      bouton.disabled = true;
+      statut.className = 'formulaire__statut';
+      statut.textContent = 'Envoi en cours…';
+      try {
+        const reponse = await fetch(form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form),
+        });
+        if (!reponse.ok) throw new Error();
+        form.reset();
+        statut.classList.add('ok');
+        statut.textContent = 'Merci, ton message est bien parti ! Je te réponds très vite 🫡';
+      } catch {
+        statut.classList.add('erreur');
+        statut.textContent = "Oups, l'envoi n'a pas marché. Écris-moi directement à giacomo.ugc@gmail.com";
+      }
+      bouton.disabled = false;
+    });
+  </script>
+</body>
+</html>
