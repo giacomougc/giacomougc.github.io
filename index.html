@@ -94,6 +94,7 @@
     <!-- BANDEAU MARQUES -->
     <section class="brands">
       <p class="eyebrow">Ils m'ont fait confiance</p>
+      <div class="brands__defile">
       <div class="brands__grid">
         <div class="brand-chip"><img src="images/brands/logo-01.webp" alt="Caats" loading="lazy"></div>
         <div class="brand-chip"><img src="images/brands/logo-03.webp" alt="Cocorico" data-echelle="1.15" loading="lazy"></div>
@@ -114,6 +115,7 @@
         <div class="brand-chip"><img src="images/brands/logo-19.webp" alt="Plombier BF" loading="lazy"></div>
         <div class="brand-chip"><img src="images/brands/logo-20.webp" alt="The Scientist" loading="lazy"></div>
         <div class="brand-chip"><img src="images/brands/logo-21.webp" alt="Luveon" data-echelle="1.2" loading="lazy"></div>
+      </div>
       </div>
     </section>
 
@@ -913,6 +915,14 @@
     // Logos marques : même surface visuelle pour tous, quelle que soit leur forme
     // (un logo carré est plus haut, un logo très allongé plus bas)
     const brandsGrid = document.querySelector('.brands__grid');
+    // Défilement en boucle : on duplique les logos pour que la 2e série prenne le relais sans saut
+    // (chargement immédiat : en « lazy », les logos encore hors champ arriveraient vides)
+    brandsGrid.querySelectorAll('img').forEach((img) => { img.loading = 'eager'; });
+    [...brandsGrid.children].forEach((chip) => {
+      const copie = chip.cloneNode(true);
+      copie.setAttribute('aria-hidden', 'true');
+      brandsGrid.appendChild(copie);
+    });
     const SURFACE_LOGO = window.matchMedia('(max-width: 600px)').matches ? 2600 : 4000;
     brandsGrid.querySelectorAll('.brand-chip img').forEach((img) => {
       const dimensionner = () => {
@@ -939,16 +949,11 @@
     }, { threshold: 0.15 });
     observateurAvis.observe(grilleAvis);
 
-    // Apparition des marques au scroll, en cascade
-    brandsGrid.querySelectorAll('.brand-chip').forEach((chip, i) => chip.style.setProperty('--i', i));
-    brandsGrid.classList.add('reveal');
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        brandsGrid.classList.add('is-visible');
-        io.disconnect();
-      }
-    }, { threshold: 0.2 });
-    io.observe(brandsGrid);
+    // Vitesse de défilement constante (environ 50 px/s), quelle que soit la largeur des logos
+    const regleVitesse = () => brandsGrid.style.setProperty('--duree', brandsGrid.scrollWidth / 2 / 50 + 's');
+    regleVitesse();
+    window.addEventListener('load', regleVitesse);
+    window.addEventListener('resize', regleVitesse);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
