@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://giacomo-ugc.fr/sitemap.xml
