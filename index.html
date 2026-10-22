@@ -4,7 +4,35 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Giacomo Colomer — Créateur UGC à Nîmes</title>
-  <meta name="description" content="Créateur de contenu UGC basé à Nîmes : vidéos authentiques pour marques e-commerce et DNVB. Sport, grooming, jeux de société, famille, tech.">
+  <meta name="description" content="Giacomo Colomer, créateur de contenu UGC à Nîmes : des vidéos publicitaires authentiques et des résultats mesurés pour les marques. Jeux de société, animaux, bien-être, grooming, BTP, tech.">
+  <link rel="canonical" href="https://giacomougc.github.io/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <!-- Aperçu quand le lien est partagé (LinkedIn, WhatsApp, Facebook…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:url" content="https://giacomougc.github.io/">
+  <meta property="og:title" content="Giacomo Colomer — Créateur UGC à Nîmes">
+  <meta property="og:description" content="Du contenu qui sonne vrai : des vidéos UGC authentiques, avec des résultats mesurés pour plus de 20 marques.">
+  <meta property="og:image" content="https://giacomougc.github.io/images/partage.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Fiche pour Google : qui est Giacomo et où le trouver -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Giacomo Colomer",
+    "jobTitle": "Créateur de contenu UGC",
+    "url": "https://giacomougc.github.io/",
+    "email": "mailto:giacomo.ugc@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Nîmes", "addressRegion": "Occitanie", "addressCountry": "FR" },
+    "sameAs": [
+      "https://www.linkedin.com/in/giacomo-colomer-5927a3399/",
+      "https://www.instagram.com/giacomo_ugc/"
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +45,11 @@
     <nav class="nav__links">
       <a href="#portfolio">Portfolio</a>
       <a href="#resultats">Résultats</a>
-      <a href="#univers">Univers</a>
+      <!-- Menu déroulant : la liste est remplie en JS à partir des filtres du portfolio -->
+      <div class="nav__univers">
+        <button class="nav__univers-bouton" aria-expanded="false" aria-controls="menu-univers">Univers <span aria-hidden="true">▾</span></button>
+        <ul class="nav__menu" id="menu-univers" hidden></ul>
+      </div>
       <a href="#contact" class="btn btn--small" data-contact>Me contacter</a>
     </nav>
   </header>
@@ -40,27 +72,46 @@
         <p class="hero__dispo"><span class="dot"></span> Disponible pour de nouveaux tournages</p>
       </div>
       <div class="hero__visual">
-        <div class="phone">
-          <video class="phone__video" src="videos/hero-cocorico.mp4" poster="images/videos/7431627558686760961.jpg"
-                 autoplay muted loop playsinline aria-label="Giacomo en tournage devant une fontaine à Nîmes"></video>
+        <!-- Vidéo de présentation : data-presentation = identifiant YouTube, lue dans le téléphone au clic -->
+        <div class="phone" data-presentation="jAGYloe_dlg">
+          <img class="phone__video" src="images/videos/jAGYloe_dlg.jpg" alt="Giacomo se présente face caméra">
+          <button class="phone__lecture" aria-label="Lire ma vidéo de présentation">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>
+            <span>Ma présentation</span>
+          </button>
         </div>
         <div class="sticker sticker--1">🥊 Coach de boxe</div>
+        <div class="sticker sticker--3">🐈 Floki, mon assistant de prod</div>
+        <div class="sticker sticker--4">🤝 +20 marques</div>
         <div class="sticker sticker--2">🎲 500+ jeux de société</div>
+        <div class="sticker sticker--5">👫 Tournages en duo</div>
       </div>
     </section>
 
     <!-- BANDEAU MARQUES -->
     <section class="brands">
-      <p>Ils m'ont fait confiance</p>
-      <ul>
-        <li>Yaqua Games</li>
-        <li>Weenect</li>
-        <li>Monsieur Barbier</li>
-        <li>Soya</li>
-        <li>Caats</li>
-        <li>Total 10</li>
-        <li>Pili Pili</li>
-      </ul>
+      <p class="eyebrow">Ils m'ont fait confiance</p>
+      <div class="brands__grid">
+        <div class="brand-chip"><img src="images/brands/logo-01.webp" alt="Caats" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-03.webp" alt="Cocorico" data-echelle="1.15" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-04.webp" alt="Ultra Premium Direct" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-05.webp" alt="Braineffect" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-06.webp" alt="Pacha" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-07.svg" alt="Deermates" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-08.webp" alt="Jopy" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-09.webp" alt="Titanio Puro" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-10.webp" alt="Le Preworkout" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-11.webp" alt="Soya" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-12.webp" alt="Crack Games" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-13.webp" alt="Vert Jade Jewelry" data-echelle="1.15" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-15.webp" alt="Weenect" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-16.webp" alt="Monsieur Barbier" data-echelle="1.35" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-17.webp" alt="RHPC Plomberie Chauffage" data-echelle="1.3" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-18.webp" alt="ATM Gaming" data-echelle="1.35" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-19.webp" alt="Plombier BF" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-20.webp" alt="The Scientist" loading="lazy"></div>
+        <div class="brand-chip"><img src="images/brands/logo-21.webp" alt="Luveon" data-echelle="1.2" loading="lazy"></div>
+      </div>
     </section>
 
     <!-- RÉSULTATS -->
@@ -69,20 +120,20 @@
       <h2>Des vidéos pensées pour convertir</h2>
       <div class="stats">
         <article class="stat">
-          <strong>436K</strong>
-          <span>impressions pour une vidéo Yaqua Games, diffusée sans interruption plus d'un mois</span>
+          <strong>700K</strong>
+          <span>vues sur TikTok pour une vidéo Tiime, l'appli de facturation</span>
         </article>
         <article class="stat">
-          <strong>31K+</strong>
-          <span>clics générés par cette même publicité</span>
+          <strong>400K</strong>
+          <span>impressions et 33K clics en un mois et demi pour le jeu Total&nbsp;10</span>
         </article>
         <article class="stat">
-          <strong>Top 8%</strong>
-          <span>des 569 publicités actives de la marque Soya</span>
+          <strong>1,19&nbsp;€</strong>
+          <span>de coût par achat sur une pub Pili Pili Extra Spicy</span>
         </article>
         <article class="stat">
-          <strong>1er €</strong>
-          <span>rentabilisé dès le premier euro investi pour des pros de la clim et des pompes à chaleur</span>
+          <strong>Top 8</strong>
+          <span>des meilleures pubs Soya, parmi 569 publicités actives de la marque</span>
         </article>
       </div>
     </section>
@@ -90,73 +141,368 @@
     <!-- PORTFOLIO -->
     <section class="section section--dark" id="portfolio">
       <p class="eyebrow">Portfolio</p>
-      <h2>Quelques tournages</h2>
+      <h2>Mes tournages</h2>
+      <div class="filtres" role="group" aria-label="Filtrer les vidéos par thématique">
+        <button class="filtre" data-filtre="une" aria-pressed="true">⭐ Sélection</button>
+        <button class="filtre" data-filtre="animaux" aria-pressed="false">🐾 Animaux</button>
+        <button class="filtre" data-filtre="bien-etre" aria-pressed="false">🌿 Bien-être</button>
+        <button class="filtre" data-filtre="jeux" aria-pressed="false">🎲 Jeux de société</button>
+        <button class="filtre" data-filtre="grooming" aria-pressed="false">🧔 Grooming</button>
+        <button class="filtre" data-filtre="btp" aria-pressed="false">🏗️ BTP &amp; habitat</button>
+        <button class="filtre" data-filtre="bijoux" aria-pressed="false">💍 Bijoux</button>
+        <button class="filtre" data-filtre="gestion" aria-pressed="false">🧾 Gestion</button>
+        <button class="filtre" data-filtre="tech" aria-pressed="false">📱 Tech</button>
+        <button class="filtre" data-filtre="mode" aria-pressed="false">👕 Mode</button>
+        <button class="filtre" data-filtre="tout" aria-pressed="false">Tout voir</button>
+      </div>
       <div class="videos">
-        <!-- Chaque vidéo = un post LinkedIn : data-post = numéro du post (urn:li:activity:…) -->
-        <button class="video" data-post="7516141978548396032">
+        <!-- Chaque vidéo : data-youtube = identifiant YouTube (la partie après watch?v=)
+             ou data-post = numéro du post LinkedIn (urn:li:activity:…)
+             data-theme = thématique (doit correspondre à un bouton data-filtre ci-dessus)
+             data-une = rang dans la sélection affichée à l'arrivée (1 vidéo par thématique, 1 = en premier)
+             Résultats à mettre en avant (optionnel) : data-resultats="*436K* impressions | *31K+* clics"
+             → un badge par résultat sur la miniature + la liste sous la vidéo pendant la lecture.
+             Séparer les résultats par | ; ce qui est entre *étoiles* passe en gros. -->
+
+        <!-- 🐾 Animaux -->
+        <button class="video" data-youtube="edy6gVfHYWw" data-theme="animaux" data-une="4"
+                data-resultats="*29 €* de coût par achat">
           <span class="video__frame">
-            <img src="images/videos/7516141978548396032.jpg" alt="Vidéo Pili Pili Extra Spicy" loading="lazy">
+            <img src="images/videos/edy6gVfHYWw.jpg" alt="Vidéo Caats" loading="lazy">
             <span class="video__play">▶</span>
-            <span class="video__duree">1:12</span>
+            <span class="video__duree">0:49</span>
           </span>
-          <span class="video__legende"><b>Pili Pili Extra Spicy</b> Jeu de société · Format déjanté</span>
+          <span class="video__legende"><b>Caats</b> Je teste les croquettes et pâtées virales</span>
         </button>
-        <button class="video" data-post="7482682933934411776">
+        <button class="video" data-youtube="SJ2Y6KcWx88" data-theme="animaux">
           <span class="video__frame">
-            <img src="images/videos/7482682933934411776.jpg" alt="Vidéo Total 10" loading="lazy">
-            <span class="video__play">▶</span>
-            <span class="video__duree">0:48</span>
-          </span>
-          <span class="video__legende"><b>Total 10</b> Jeu de société · Ma 1re collab JDS</span>
-        </button>
-        <button class="video" data-post="7515692281241182208">
-          <span class="video__frame">
-            <img src="images/videos/7515692281241182208.jpg" alt="Vidéo Climatisation" loading="lazy">
-            <span class="video__play">▶</span>
-            <span class="video__duree">1:32</span>
-          </span>
-          <span class="video__legende"><b>Climatisation</b> Habitat · Rentable dès le 1er €</span>
-        </button>
-        <button class="video" data-post="7470030329194573824">
-          <span class="video__frame">
-            <img src="images/videos/7470030329194573824.jpg" alt="Vidéo Caats" loading="lazy">
-            <span class="video__play">▶</span>
-            <span class="video__duree">0:48</span>
-          </span>
-          <span class="video__legende"><b>Caats</b> Animaux · Hook « J'étais sceptique »</span>
-        </button>
-        <button class="video" data-post="7472997500841340928">
-          <span class="video__frame">
-            <img src="images/videos/7472997500841340928.jpg" alt="Vidéo Sport & boxe" loading="lazy">
+            <img src="images/videos/SJ2Y6KcWx88.jpg" alt="Vidéo Caats" loading="lazy">
             <span class="video__play">▶</span>
             <span class="video__duree">0:47</span>
           </span>
-          <span class="video__legende"><b>Sport & boxe</b> Sport · Le hook comme un crochet</span>
+          <span class="video__legende"><b>Caats</b> Test en direct : ses croquettes préférées</span>
         </button>
-        <button class="video" data-post="7458417975474184193">
+        <button class="video" data-youtube="OR5V5t8PmW4" data-theme="animaux">
           <span class="video__frame">
-            <img src="images/videos/7458417975474184193.jpg" alt="Vidéo Collab en famille" loading="lazy">
+            <img src="images/videos/OR5V5t8PmW4.jpg" alt="Vidéo Caats" loading="lazy">
             <span class="video__play">▶</span>
-            <span class="video__duree">0:55</span>
+            <span class="video__duree">1:01</span>
           </span>
-          <span class="video__legende"><b>Collab en famille</b> Famille · Tourné avec mon fils</span>
+          <span class="video__legende"><b>Caats</b> Mon chat miaule non stop</span>
         </button>
-        <button class="video" data-post="7444281048185602048">
+        <button class="video" data-youtube="xNxfETZbA0s" data-theme="animaux">
           <span class="video__frame">
-            <img src="images/videos/7444281048185602048.jpg" alt="Vidéo Pub animaux" loading="lazy">
+            <img src="images/videos/xNxfETZbA0s.jpg" alt="Vidéo Pacha" loading="lazy">
             <span class="video__play">▶</span>
-            <span class="video__duree">0:27</span>
+            <span class="video__duree">1:28</span>
           </span>
-          <span class="video__legende"><b>Pub animaux</b> Animaux · Hook et storytelling</span>
+          <span class="video__legende"><b>Pacha</b> Quand ma copine me prend la tête</span>
         </button>
-        <button class="video" data-post="7431627558686760961">
+        <button class="video" data-youtube="u27pt_CZNsg" data-theme="animaux">
+          <span class="video__frame">
+            <img src="images/videos/u27pt_CZNsg.jpg" alt="Vidéo Pacha" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:17</span>
+          </span>
+          <span class="video__legende"><b>Pacha</b> Excuses</span>
+        </button>
+        <button class="video" data-youtube="QrJYHWFB55g" data-theme="animaux">
+          <span class="video__frame">
+            <img src="images/videos/QrJYHWFB55g.jpg" alt="Vidéo Ultra Premium Direct" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:28</span>
+          </span>
+          <span class="video__legende"><b>Ultra Premium Direct</b> Livret chat senior</span>
+        </button>
+        <button class="video" data-youtube="N3s2ajVmOx4" data-theme="animaux">
+          <span class="video__frame">
+            <img src="images/videos/N3s2ajVmOx4.jpg" alt="Vidéo Jopy" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:47</span>
+          </span>
+          <span class="video__legende"><b>Jopy</b> Litière végétale</span>
+        </button>
+
+        <!-- 🌿 Bien-être -->
+        <button class="video" data-youtube="eaMgcupTGcg" data-theme="bien-etre" data-une="2"
+                data-resultats="Active plus de *3 mois* | A atteint le *top 8* des meilleures pubs Soya">
+          <span class="video__frame">
+            <img src="images/videos/eaMgcupTGcg.jpg" alt="Vidéo Soya" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:16</span>
+          </span>
+          <span class="video__legende"><b>Soya</b> Je me suis fait surprendre</span>
+        </button>
+        <button class="video" data-youtube="HvDXN7dv-UQ" data-theme="bien-etre">
+          <span class="video__frame">
+            <img src="images/videos/HvDXN7dv-UQ.jpg" alt="Vidéo Soya" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:32</span>
+          </span>
+          <span class="video__legende"><b>Soya</b> Mon témoignage</span>
+        </button>
+        <button class="video" data-youtube="za4Pdrg_6u4" data-theme="bien-etre"
+                data-resultats="ROAS de *2,90*">
+          <span class="video__frame">
+            <img src="images/videos/za4Pdrg_6u4.jpg" alt="Vidéo Soya" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:46</span>
+          </span>
+          <span class="video__legende"><b>Soya</b> Évolution des oreillers à travers les âges</span>
+        </button>
+        <button class="video" data-youtube="bkDLKKcxI_o" data-theme="bien-etre"
+                data-resultats="Active depuis *5 mois*">
+          <span class="video__frame">
+            <img src="images/videos/bkDLKKcxI_o.jpg" alt="Vidéo Soya" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:47</span>
+          </span>
+          <span class="video__legende"><b>Soya</b> Récupération sportive</span>
+        </button>
+        <button class="video" data-youtube="Iqj7HP81yyk" data-theme="bien-etre">
+          <span class="video__frame">
+            <img src="images/videos/Iqj7HP81yyk.jpg" alt="Vidéo Soya" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:52</span>
+          </span>
+          <span class="video__legende"><b>Soya</b> Autopsie d'un oreiller</span>
+        </button>
+        <button class="video" data-youtube="rwtuuy2O-18" data-theme="bien-etre">
+          <span class="video__frame">
+            <img src="images/videos/rwtuuy2O-18.jpg" alt="Vidéo Soya" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:58</span>
+          </span>
+          <span class="video__legende"><b>Soya</b> Il faut que je t'avoue</span>
+        </button>
+
+        <!-- 🎲 Jeux de société -->
+        <button class="video" data-youtube="nq5DUH2S0_w" data-theme="jeux" data-une="3"
+                data-resultats="*400K* impressions | *33K* clics en 1 mois et demi">
+          <span class="video__frame">
+            <img src="images/videos/nq5DUH2S0_w.jpg" alt="Vidéo Total 10" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:49</span>
+          </span>
+          <span class="video__legende"><b>Total 10</b> Ma 1re collab jeu de société</span>
+        </button>
+        <button class="video" data-youtube="nqERSbzBpoE" data-theme="jeux"
+                data-resultats="*1,88 €* de coût par achat">
+          <span class="video__frame">
+            <img src="images/videos/nqERSbzBpoE.jpg" alt="Vidéo Pili Pili Extra Spicy" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:13</span>
+          </span>
+          <span class="video__legende"><b>Pili Pili Extra Spicy</b> Concept Hot Ones</span>
+        </button>
+        <button class="video" data-youtube="NiJ6KvBJ95I" data-theme="jeux"
+                data-resultats="*1,19 €* de coût par achat">
+          <span class="video__frame">
+            <img src="images/videos/NiJ6KvBJ95I.jpg" alt="Vidéo Pili Pili Extra Spicy" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:58</span>
+          </span>
+          <span class="video__legende"><b>Pili Pili Extra Spicy</b> Format déjanté</span>
+        </button>
+        <button class="video" data-youtube="1-OpcrKE_Uo" data-theme="jeux"
+                data-resultats="*1,72 €* de coût par achat">
+          <span class="video__frame">
+            <img src="images/videos/1-OpcrKE_Uo.jpg" alt="Vidéo Speedbac" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:44</span>
+          </span>
+          <span class="video__legende"><b>Speedbac</b> Version duo</span>
+        </button>
+        <button class="video" data-youtube="r98NieQruuA" data-theme="jeux"
+                data-resultats="*1,62 €* de coût par achat">
+          <span class="video__frame">
+            <img src="images/videos/r98NieQruuA.jpg" alt="Vidéo Stack 5" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:11</span>
+          </span>
+          <span class="video__legende"><b>Stack 5</b> Les règles rythmées</span>
+        </button>
+        <button class="video" data-youtube="tVbBbPWO1wM" data-theme="jeux">
+          <span class="video__frame">
+            <img src="images/videos/tVbBbPWO1wM.jpg" alt="Vidéo Crack List" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:22</span>
+          </span>
+          <span class="video__legende"><b>Crack List</b> Shake that game en rythme</span>
+        </button>
+        <button class="video" data-youtube="Jg6C1Odjf9E" data-theme="jeux">
+          <span class="video__frame">
+            <img src="images/videos/Jg6C1Odjf9E.jpg" alt="Vidéo Rankking" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:37</span>
+          </span>
+          <span class="video__legende"><b>Rankking</b> Je pensais que mes potes me connaissaient</span>
+        </button>
+        <button class="video" data-youtube="qkvb78Wcd7I" data-theme="jeux">
+          <span class="video__frame">
+            <img src="images/videos/qkvb78Wcd7I.jpg" alt="Vidéo Mouton" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:33</span>
+          </span>
+          <span class="video__legende"><b>Mouton</b> Je te fais jouer</span>
+        </button>
+
+        <!-- 🧔 Grooming -->
+        <button class="video" data-youtube="ay6SqkfPymU" data-theme="grooming" data-une="5">
+          <span class="video__frame">
+            <img src="images/videos/ay6SqkfPymU.jpg" alt="Vidéo Monsieur Barbier" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:43</span>
+          </span>
+          <span class="video__legende"><b>Monsieur Barbier</b> Format court</span>
+        </button>
+        <button class="video" data-youtube="EWB1ewHtImg" data-theme="grooming">
+          <span class="video__frame">
+            <img src="images/videos/EWB1ewHtImg.jpg" alt="Vidéo Monsieur Barbier" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:40</span>
+          </span>
+          <span class="video__legende"><b>Monsieur Barbier</b> Mon avis</span>
+        </button>
+        <button class="video" data-youtube="QW_Hd8_bO0c" data-theme="grooming">
+          <span class="video__frame">
+            <img src="images/videos/QW_Hd8_bO0c.jpg" alt="Vidéo The Scientist" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:38</span>
+          </span>
+          <span class="video__legende"><b>The Scientist</b> Version duo</span>
+        </button>
+        <button class="video" data-youtube="iqttTm-4WmA" data-theme="grooming">
+          <span class="video__frame">
+            <img src="images/videos/iqttTm-4WmA.jpg" alt="Vidéo The Scientist" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:31</span>
+          </span>
+          <span class="video__legende"><b>The Scientist</b> Version solo</span>
+        </button>
+
+        <!-- 🏗️ BTP & habitat -->
+        <button class="video" data-youtube="_R7nJnSwnTw" data-theme="btp" data-une="1"
+                data-resultats="ROAS de *41* | Rentable dès le *1er €* | Pub coupée : trop de demandes !">
+          <span class="video__frame">
+            <img src="images/videos/_R7nJnSwnTw.jpg" alt="Vidéo Pompes à chaleur" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:32</span>
+          </span>
+          <span class="video__legende"><b>Pompes à chaleur</b> Clim &amp; pompes à chaleur</span>
+        </button>
+        <button class="video" data-youtube="2jmiCk9TYaE" data-theme="btp">
+          <span class="video__frame">
+            <img src="images/videos/2jmiCk9TYaE.jpg" alt="Vidéo Toiture" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:15</span>
+          </span>
+          <span class="video__legende"><b>Toiture</b> Couverture</span>
+        </button>
+        <button class="video" data-youtube="FyejUWVpW1Y" data-theme="btp">
+          <span class="video__frame">
+            <img src="images/videos/FyejUWVpW1Y.jpg" alt="Vidéo Paq'Elec" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:24</span>
+          </span>
+          <span class="video__legende"><b>Paq'Elec</b> Présentation du service</span>
+        </button>
+        <button class="video" data-youtube="bacNunMew0Q" data-theme="btp">
+          <span class="video__frame">
+            <img src="images/videos/bacNunMew0Q.jpg" alt="Vidéo Maison Costalat" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">1:36</span>
+          </span>
+          <span class="video__legende"><b>Maison Costalat</b> Présentation</span>
+        </button>
+
+        <!-- 💍 Bijoux -->
+        <button class="video" data-youtube="EmPRB02NnfU" data-theme="bijoux" data-une="6">
+          <span class="video__frame">
+            <img src="images/videos/EmPRB02NnfU.jpg" alt="Vidéo Vert Jade" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:56</span>
+          </span>
+          <span class="video__legende"><b>Vert Jade</b> Avis sur les bijoux</span>
+        </button>
+
+        <!-- 🧾 Gestion -->
+        <button class="video" data-youtube="LYDg6wFap8o" data-theme="gestion" data-une="8"
+                data-resultats="*700K* vues sur TikTok">
+          <span class="video__frame">
+            <img src="images/videos/LYDg6wFap8o.jpg" alt="Vidéo Tiime" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:37</span>
+          </span>
+          <span class="video__legende"><b>Tiime</b> Avis sur l'appli de facturation</span>
+        </button>
+
+        <!-- 📱 Tech -->
+        <button class="video" data-youtube="nTGT-YLQpbw" data-theme="tech" data-une="7"
+                data-resultats="*2e* meilleure pub sur 26 | *408K* personnes touchées | *3,7K €* investis">
+          <span class="video__frame">
+            <img src="images/videos/nTGT-YLQpbw.jpg" alt="Vidéo Weenect" loading="lazy">
+            <span class="video__play">▶</span>
+            <span class="video__duree">0:34</span>
+          </span>
+          <span class="video__legende"><b>Weenect</b> Avis sur le traceur GPS</span>
+        </button>
+
+        <!-- 👕 Mode (vidéo LinkedIn) -->
+        <button class="video" data-post="7431627558686760961" data-theme="mode">
           <span class="video__frame">
             <img src="images/videos/7431627558686760961.jpg" alt="Vidéo Cocorico" loading="lazy">
             <span class="video__play">▶</span>
             <span class="video__duree">0:16</span>
           </span>
-          <span class="video__legende"><b>Cocorico</b> Mode made in France · Unboxing</span>
+          <span class="video__legende"><b>Cocorico</b> Mode made in France</span>
         </button>
+      </div>
+    </section>
+
+    <!-- AVIS CLIENTS (textes recopiés des captures reçues) -->
+    <section class="section avis" id="avis">
+      <p class="eyebrow">Ils en parlent mieux que moi</p>
+      <h2>Ce que les marques<br>en ont pensé</h2>
+      <div class="avis__grille">
+        <div class="avis__colonne">
+          <figure class="avis__carte avis__carte--vedette">
+            <blockquote>Punaise, la classe ! Je pensais qu'on travaillait avec un créateur UGC et on a <mark>Belmondo</mark>&nbsp;!! Franchement j'adore le ton direct, clair et souriant tout en faisant sérieux. Bravo&nbsp;!!! En plus, y a vraiment de quoi faire des montages très dynamiques, c'est top.</blockquote>
+            <figcaption><span class="avis__avatar">G</span><span><b>G.</b> Message reçu par e-mail</span></figcaption>
+          </figure>
+          <figure class="avis__carte">
+            <blockquote>Merci beaucoup pour tes vidéos, elles sont tops !</blockquote>
+            <figcaption><span class="avis__avatar">L</span><span><b>L.</b> Message reçu par e-mail</span></figcaption>
+          </figure>
+        </div>
+        <div class="avis__colonne">
+          <figure class="avis__carte avis__carte--note">
+            <p class="avis__etoiles" aria-label="Note de 5 sur 5">★★★★★ <b>5.0</b></p>
+            <blockquote>Excellent créateur, livraison rapide et contenu de super qualité, je recommande vivement 👌</blockquote>
+            <ul class="avis__criteres">
+              <li>Communication <b>5.0</b></li>
+              <li>Respect du brief <b>5.0</b></li>
+              <li>Qualité de jeu <b>5.0</b></li>
+              <li>Qualité technique <b>5.0</b></li>
+            </ul>
+            <figcaption><span class="avis__avatar avis__avatar--noir">S</span><span><b>Sofiane, Luma</b> 22 mai 2026</span></figcaption>
+          </figure>
+          <figure class="avis__carte avis__carte--chat">
+            <p class="avis__bulle">T'es bon, tu sais ?</p>
+            <p class="avis__bulle">La vidéo est juste perfect 👌👌</p>
+            <figcaption><span class="avis__avatar avis__avatar--rouge">💬</span><span><b>Message privé</b> Retour sur une vidéo</span></figcaption>
+          </figure>
+        </div>
+        <div class="avis__colonne">
+          <figure class="avis__carte">
+            <blockquote>Merci beaucoup pour les premières vidéos, elles sont vraiment trop cools ! C'est très drôle les hooks piments sur PILI et le montage de Stack&nbsp;5 est vraiment quali. Tes scripts sont très bons, on comprend bien les règles et ça donne envie de jouer 😊</blockquote>
+            <figcaption><span class="avis__avatar">M</span><span><b>M.</b> Jeux de société</span></figcaption>
+          </figure>
+          <figure class="avis__carte">
+            <blockquote>Trop bien cette deuxième version ! Les plans sont vraiment cools et on voit que tu t'es beaucoup donné, merci énormément pour ton travail 🙌</blockquote>
+            <figcaption><span class="avis__avatar">A</span><span><b>A.</b> Message reçu par e-mail</span></figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -165,11 +511,24 @@
       <p class="eyebrow">De A à Z</p>
       <h2>Ce que je prends en charge</h2>
       <div class="steps">
+        <article class="step"><span>🔍</span><h3>L'analyse</h3><p>Avant d'écrire une ligne, j'analyse tes concurrents et les trends du moment.</p></article>
         <article class="step"><span>✍️</span><h3>Le script</h3><p>Des scripts pensés pour la conversion, avec un hook qui arrête le scroll.</p></article>
-        <article class="step"><span>🎬</span><h3>Le tournage</h3><p>Du contenu authentique, un son propre, un angle clair.</p></article>
+        <article class="step"><span>🎬</span><h3>Le tournage</h3><p>Du contenu authentique et naturel, un son propre, un angle clair.</p></article>
         <article class="step"><span>✂️</span><h3>Le montage</h3><p>Je monte moi-même mes vidéos, du rythme jusqu'à l'appel à l'action.</p></article>
         <article class="step"><span>📈</span><h3>Le suivi</h3><p>Après diffusion, on regarde les chiffres ensemble et on réajuste si besoin.</p></article>
       </div>
+      <h3 class="formats__titre">Les formats que je tourne</h3>
+      <ul class="formats">
+        <li>Unboxing</li>
+        <li>Avis & témoignage</li>
+        <li>Démo / tuto</li>
+        <li>Storytelling</li>
+        <li>Résolution de problème</li>
+        <li>Micro-trottoir</li>
+        <li>Tournage studio</li>
+        <li>Format duo</li>
+        <li>Pack mensuel</li>
+      </ul>
       <p class="steps__note">
         Manager et chef de projet depuis 2014 : je sais structurer, prioriser,
         tenir les délais et communiquer clairement. Avec moi, un brief est un brief.
@@ -203,28 +562,39 @@
     <section class="section section--accent" id="univers">
       <p class="eyebrow">Un profil multi-facettes</p>
       <h2>Mes univers</h2>
+      <!-- data-vers = thématique du portfolio vers laquelle le bouton renvoie (même valeur que data-filtre) ;
+           sans data-vers, le tag reste un simple badge (pas encore de vidéo dans ce domaine) -->
       <ul class="tags">
-        <li>🥊 Sport & fitness</li>
-        <li>🧔 Grooming & lifestyle masculin</li>
-        <li>🎲 Jeux de société</li>
-        <li>🐾 Animaux</li>
-        <li>👨‍👩‍👧 Famille</li>
-        <li>📱 Tech & objets connectés</li>
-        <li>🏠 Habitat : couverture, clim, pompes à chaleur</li>
+        <li><button class="tag" data-vers="grooming">🧔 Grooming & lifestyle masculin</button></li>
+        <li><button class="tag" data-vers="grooming">🧴 Skincare</button></li>
+        <li><button class="tag" data-vers="jeux">🎲 Jeux de société</button></li>
+        <li><button class="tag" data-vers="animaux">🐾 Animaux</button></li>
+        <li><button class="tag" data-vers="bien-etre">🌿 Bien-être & sommeil</button></li>
+        <li><button class="tag" data-vers="btp">🏗️ BTP & habitat : couverture, clim, pompes à chaleur</button></li>
+        <li><button class="tag" data-vers="tech">📱 Tech & objets connectés</button></li>
+        <li><button class="tag" data-vers="mode">👕 Mode</button></li>
+        <li><button class="tag" data-vers="bijoux">💍 Bijoux</button></li>
+        <li><button class="tag" data-vers="gestion">🧾 Gestion & facturation</button></li>
+        <li><span class="tag">🥊 Sport & fitness</span></li>
+        <li><span class="tag">👨‍👩‍👧 Famille</span></li>
       </ul>
       <p class="univers__note">
-        Coach de boxe et kickboxing, collectionneur de jeux de société depuis une dizaine d'années :
-        quand je parle de ces sujets, c'est avec la crédibilité de quelqu'un qui les connaît vraiment,
-        pas d'un créateur qui récite un script.
+        Le jour, je gère une équipe dans le secteur public. Le soir, je coache des boxeurs sur le ring.
+        Le reste du temps, je suis en salle ou en train de tourner avec Floki, mon Maine Coon
+        qui se prend pour mon assistant de prod. 🐈
+      </p>
+      <p class="univers__note">
+        Ajoute à ça une dizaine d'années à collectionner les jeux de société : quand je parle de ces sujets,
+        c'est avec la crédibilité de quelqu'un qui les vit vraiment, pas d'un créateur qui récite un script.
       </p>
     </section>
 
     <!-- DUO -->
     <section class="section duo">
       <div class="duo__visual">
-        <button class="video" data-post="7502976717804793856">
+        <button class="video" data-youtube="aC0lXCxaQMs">
           <span class="video__frame">
-            <img src="images/videos/7502976717804793856.jpg" alt="Vidéo de Giacomo et Clémentine" loading="lazy">
+            <img src="images/videos/aC0lXCxaQMs.jpg" alt="Vidéo de Giacomo et Clémentine" loading="lazy">
             <span class="video__play">▶</span>
             <span class="video__duree">0:20</span>
           </span>
@@ -249,6 +619,7 @@
       <div class="hero__cta">
         <a href="#contact" class="btn" data-contact>Envoyer mon brief</a>
         <a href="https://www.linkedin.com/in/giacomo-colomer-5927a3399/" class="btn btn--ghost" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/giacomo_ugc/" class="btn btn--ghost" target="_blank" rel="noopener">Instagram</a>
       </div>
       <p class="contact__mail">ou directement : <a href="mailto:giacomo.ugc@gmail.com">giacomo.ugc@gmail.com</a></p>
     </section>
@@ -282,6 +653,7 @@
             <option>Vidéo(s) UGC pour la pub</option>
             <option>Vidéo(s) UGC pour les réseaux</option>
             <option>Format duo / couple / famille</option>
+            <option>Pack mensuel</option>
             <option>Autre chose</option>
           </select>
         </label>
@@ -297,8 +669,16 @@
 
   <!-- LECTEUR LINKEDIN -->
   <dialog class="lecteur" id="lecteur">
-    <button class="lecteur__fermer" aria-label="Fermer">✕</button>
-    <iframe title="Vidéo LinkedIn de Giacomo" allowfullscreen></iframe>
+    <div class="lecteur__video">
+      <button class="lecteur__fermer" aria-label="Fermer">✕</button>
+      <!-- YouTube exige de connaître le site qui intègre la vidéo (sinon « Erreur 153 ») :
+           ça marche sur localhost ou en ligne, pas en ouvrant index.html en double-clic -->
+      <iframe title="Vidéo de Giacomo" allow="autoplay; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <aside class="lecteur__resultats" hidden>
+      <p class="eyebrow">📈 Résultats</p>
+      <ul></ul>
+    </aside>
   </dialog>
 
   <footer class="footer">
@@ -306,14 +686,185 @@
   </footer>
 
   <script>
+    // Vidéo de présentation du haut de page : le lecteur YouTube remplace la miniature au clic
+    const telephone = document.querySelector('.phone');
+    telephone.querySelector('.phone__lecture').addEventListener('click', () => {
+      const lecteurHero = document.createElement('iframe');
+      lecteurHero.className = 'phone__video';
+      lecteurHero.src = 'https://www.youtube.com/embed/' + telephone.dataset.presentation + '?autoplay=1&rel=0&playsinline=1';
+      lecteurHero.title = 'Vidéo de présentation de Giacomo';
+      lecteurHero.allow = 'autoplay; fullscreen; picture-in-picture';
+      lecteurHero.allowFullscreen = true;
+      lecteurHero.referrerPolicy = 'strict-origin-when-cross-origin';
+      telephone.replaceChildren(lecteurHero);
+      telephone.classList.add('en-lecture');
+    });
+
     const lecteur = document.getElementById('lecteur');
     const iframe = lecteur.querySelector('iframe');
 
-    document.querySelectorAll('[data-post]').forEach((bouton) => {
+    // data-post = post LinkedIn, data-youtube = identifiant d'une vidéo YouTube (ex. youtube.com/shorts/ID)
+    const encartResultats = lecteur.querySelector('.lecteur__resultats');
+    const listeResultats = encartResultats.querySelector('ul');
+    const lireResultats = (bouton) => (bouton.dataset.resultats || '').split('|').map((r) => r.trim()).filter(Boolean);
+
+    // "*436K* impressions" → <strong>436K</strong> impressions
+    const ligneResultat = (texte) => {
+      const li = document.createElement('li');
+      texte.split(/\*(.+?)\*/).forEach((morceau, i) => {
+        if (!morceau) return;
+        if (i % 2) {
+          const fort = document.createElement('strong');
+          fort.textContent = morceau;
+          li.append(fort);
+        } else {
+          li.append(morceau);
+        }
+      });
+      return li;
+    };
+
+    // Déclenche le « pop » des badges quand la miniature devient visible (à chaque fois qu'elle réapparaît)
+    const observateurBadges = new IntersectionObserver((entrees) => {
+      entrees.forEach((e) => e.target.classList.toggle('vu', e.isIntersecting));
+    }, { threshold: 0.6 });
+
+    document.querySelectorAll('[data-post], [data-youtube]').forEach((bouton) => {
+      // Badges résultats sur la miniature (un par résultat, empilés en haut à gauche)
+      const resultats = lireResultats(bouton);
+      if (resultats.length) {
+        const badges = document.createElement('span');
+        badges.className = 'video__badges a-animer';
+        resultats.forEach((texte, n) => {
+          const badge = document.createElement('span');
+          badge.className = 'video__resultat';
+          badge.style.setProperty('--n', n);
+          badge.textContent = (n ? '' : '📈 ') + texte.replaceAll('*', '');
+          badges.append(badge);
+        });
+        bouton.querySelector('.video__frame').append(badges);
+        observateurBadges.observe(badges);
+      }
+
       bouton.addEventListener('click', () => {
+        // YouTube : lecture sur place, à la place de la miniature
+        if (bouton.dataset.youtube) return lireIci(bouton);
+        // LinkedIn : l'intégration est une carte de post, trop large pour la miniature → fenêtre
         iframe.src = 'https://www.linkedin.com/embed/feed/update/urn:li:activity:' + bouton.dataset.post + '?compact=1';
+        listeResultats.replaceChildren(...lireResultats(bouton).map(ligneResultat));
+        encartResultats.hidden = !listeResultats.children.length;
         lecteur.showModal();
       });
+    });
+
+    // Lecture sur place : le bouton est remplacé par un bloc avec le lecteur YouTube,
+    // puis remis quand on lance une autre vidéo ou qu'on change de filtre (une seule lecture à la fois)
+    let enCours = null;
+    const arreter = () => {
+      if (!enCours) return;
+      enCours.bloc.replaceWith(enCours.bouton);
+      enCours = null;
+    };
+    const lireIci = (bouton) => {
+      arreter();
+      const bloc = document.createElement('div');
+      for (const attr of bouton.attributes) bloc.setAttribute(attr.name, attr.value);
+      bloc.classList.add('en-lecture');
+
+      const cadre = document.createElement('span');
+      cadre.className = 'video__frame';
+      const lecteurIci = document.createElement('iframe');
+      lecteurIci.src = 'https://www.youtube.com/embed/' + bouton.dataset.youtube + '?autoplay=1&rel=0&playsinline=1';
+      lecteurIci.title = bouton.querySelector('img').alt;
+      lecteurIci.allow = 'autoplay; fullscreen; picture-in-picture';
+      lecteurIci.allowFullscreen = true;
+      lecteurIci.referrerPolicy = 'strict-origin-when-cross-origin';
+      cadre.append(lecteurIci);
+      bloc.append(cadre);
+
+      const legende = bouton.querySelector('.video__legende');
+      if (legende) bloc.append(legende.cloneNode(true));
+      // Résultats affichés sous la vidéo pendant la lecture
+      const resultats = lireResultats(bouton);
+      if (resultats.length) {
+        const liste = document.createElement('ul');
+        liste.className = 'video__resultats';
+        liste.append(...resultats.map(ligneResultat));
+        bloc.append(liste);
+      }
+
+      bouton.replaceWith(bloc);
+      enCours = { bouton, bloc };
+    };
+
+    // Filtres du portfolio : n'affiche que les vidéos de la thématique choisie
+    const videos = document.querySelectorAll('.videos .video');
+    const filtres = document.querySelectorAll('.filtre');
+    // "une" = la sélection affichée à l'arrivée (data-une = rang), "tout" = toutes les vidéos
+    const grille = document.querySelector('.videos');
+    const garde = (video, theme) => theme === 'tout' || (theme === 'une' ? !!video.dataset.une : video.dataset.theme === theme);
+    const filtrer = (theme, anime) => {
+      arreter();
+      filtres.forEach((f) => f.setAttribute('aria-pressed', f.dataset.filtre === theme));
+      const visibles = [...videos].filter((video) => garde(video, theme));
+      if (theme === 'une') visibles.sort((a, b) => a.dataset.une - b.dataset.une);
+      videos.forEach((video) => { video.hidden = !visibles.includes(video); video.style.order = ''; });
+      visibles.forEach((video, i) => {
+        video.style.setProperty('--i', i);
+        if (theme === 'une') video.style.order = i;
+      });
+      if (!anime) return;
+      // relance l'animation d'apparition
+      grille.classList.remove('filtrees');
+      void grille.offsetWidth;
+      grille.classList.add('filtrees');
+    };
+    filtres.forEach((filtre) => {
+      const theme = filtre.dataset.filtre;
+      if (theme !== 'une') {
+        const nb = [...videos].filter((video) => garde(video, theme)).length;
+        filtre.insertAdjacentHTML('beforeend', ` <span class="filtre__nb">${nb}</span>`);
+      }
+      filtre.addEventListener('click', () => filtrer(theme, true));
+    });
+    filtrer('une', false);
+
+    // Filtre le portfolio sur une thématique et remonte/descend jusqu'aux vidéos
+    const allerAuxVideos = (theme) => {
+      filtrer(theme, true);
+      document.querySelector('.filtres').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Tags de la section « Mes univers » : renvoient vers les vidéos de la thématique
+    document.querySelectorAll('.tag[data-vers]').forEach((tag) => {
+      tag.addEventListener('click', () => allerAuxVideos(tag.dataset.vers));
+    });
+
+    // Menu « Univers » de la navigation : un lien par thématique → filtre le portfolio et y descend
+    const boutonUnivers = document.querySelector('.nav__univers-bouton');
+    const menuUnivers = document.getElementById('menu-univers');
+    const ouvrirMenu = (ouvert) => {
+      menuUnivers.hidden = !ouvert;
+      boutonUnivers.setAttribute('aria-expanded', ouvert);
+    };
+    filtres.forEach((filtre) => {
+      if (filtre.dataset.filtre === 'une') return;
+      const li = document.createElement('li');
+      const lien = document.createElement('a');
+      lien.href = '#portfolio';
+      lien.innerHTML = filtre.innerHTML;
+      lien.addEventListener('click', (e) => {
+        e.preventDefault();
+        ouvrirMenu(false);
+        allerAuxVideos(filtre.dataset.filtre);
+      });
+      li.append(lien);
+      menuUnivers.append(li);
+    });
+    boutonUnivers.addEventListener('click', () => ouvrirMenu(menuUnivers.hidden));
+    document.addEventListener('click', (e) => { if (!e.target.closest('.nav__univers')) ouvrirMenu(false); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menuUnivers.hidden) { ouvrirMenu(false); boutonUnivers.focus(); }
     });
 
     // Fermer : bouton ✕, touche Échap ou clic à côté du lecteur
@@ -334,6 +885,46 @@
     });
     formulaire.querySelector('.formulaire__fermer').addEventListener('click', () => formulaire.close());
     formulaire.addEventListener('click', (e) => { if (e.target === formulaire) formulaire.close(); });
+
+    // Logos marques : même surface visuelle pour tous, quelle que soit leur forme
+    // (un logo carré est plus haut, un logo très allongé plus bas)
+    const brandsGrid = document.querySelector('.brands__grid');
+    const SURFACE_LOGO = window.matchMedia('(max-width: 600px)').matches ? 2600 : 4000;
+    brandsGrid.querySelectorAll('.brand-chip img').forEach((img) => {
+      const dimensionner = () => {
+        const ratio = img.naturalWidth / img.naturalHeight;
+        if (!ratio) return;
+        const echelle = Number(img.dataset.echelle) || 1; // coup de pouce pour les logos chargés en détails
+        img.style.height = Math.min(Math.sqrt(SURFACE_LOGO / ratio), 56) * echelle + 'px';
+        img.style.maxHeight = 'none';
+      };
+      if (img.complete) dimensionner(); else img.addEventListener('load', dimensionner);
+    });
+
+    // Avis clients : les cartes arrivent en cascade quand la section devient visible
+    const grilleAvis = document.querySelector('.avis__grille');
+    // Ordre d'arrivée ligne par ligne : 1re carte de chaque colonne, puis la 2e…
+    grilleAvis.querySelectorAll('.avis__colonne').forEach((colonne, c) => {
+      colonne.querySelectorAll('.avis__carte').forEach((carte, i) => carte.style.setProperty('--n', i * 3 + c));
+    });
+    grilleAvis.classList.add('a-animer');
+    const observateurAvis = new IntersectionObserver(([entree]) => {
+      if (!entree.isIntersecting) return;
+      grilleAvis.classList.add('vu');
+      observateurAvis.disconnect();
+    }, { threshold: 0.15 });
+    observateurAvis.observe(grilleAvis);
+
+    // Apparition des marques au scroll, en cascade
+    brandsGrid.querySelectorAll('.brand-chip').forEach((chip, i) => chip.style.setProperty('--i', i));
+    brandsGrid.classList.add('reveal');
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        brandsGrid.classList.add('is-visible');
+        io.disconnect();
+      }
+    }, { threshold: 0.2 });
+    io.observe(brandsGrid);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
