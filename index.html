@@ -639,17 +639,19 @@
 
       <input type="hidden" name="_subject" value="Nouveau brief depuis le portfolio UGC">
       <input type="hidden" name="_template" value="table">
-      <input type="text" name="_honey" class="piege" tabindex="-1" autocomplete="off">
+      <!-- Anti-spam : champ piège invisible (rempli seulement par les robots) + mots interdits filtrés par FormSubmit -->
+      <input type="text" name="_honey" class="piege" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="hidden" name="_blacklist" value="casino, viagra, cialis, backlinks, seo services, porn, betting, bit.ly">
 
       <div class="champs">
         <label>Prénom et nom *
-          <input type="text" name="Nom" required autocomplete="name">
+          <input type="text" name="Nom" required maxlength="80" autocomplete="name">
         </label>
         <label>Marque / entreprise
-          <input type="text" name="Marque" autocomplete="organization">
+          <input type="text" name="Marque" maxlength="80" autocomplete="organization">
         </label>
         <label>E-mail *
-          <input type="email" name="email" required autocomplete="email">
+          <input type="email" name="email" required maxlength="120" autocomplete="email">
         </label>
         <label>Type de projet
           <select name="Projet">
@@ -661,7 +663,7 @@
           </select>
         </label>
         <label class="champs__large">Ton brief *
-          <textarea name="Message" rows="5" required placeholder="Le produit, l'objectif, le nombre de vidéos, les délais…"></textarea>
+          <textarea name="Message" rows="5" required minlength="20" maxlength="3000" placeholder="Le produit, l'objectif, le nombre de vidéos, les délais…"></textarea>
         </label>
       </div>
 
@@ -896,11 +898,13 @@
     const formulaire = document.getElementById('formulaire');
     const form = document.getElementById('form-contact');
     const statut = form.querySelector('.formulaire__statut');
+    let ouvertLe = Date.now(); // un humain met plusieurs secondes à remplir, un robot quelques millisecondes
 
     document.querySelectorAll('[data-contact]').forEach((lien) => {
       lien.addEventListener('click', (e) => {
         e.preventDefault();
         formulaire.showModal();
+        ouvertLe = Date.now();
       });
     });
     formulaire.querySelector('.formulaire__fermer').addEventListener('click', () => formulaire.close());
@@ -949,8 +953,32 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const bouton = form.querySelector('button[type="submit"]');
-      bouton.disabled = true;
       statut.className = 'formulaire__statut';
+
+      // Anti-spam : un robot remplit le champ piège ou envoie trop vite → on fait semblant que c'est parti
+      const message = form.elements.Message.value;
+      const robot = form.elements._honey.value !== '' || Date.now() - ouvertLe < 4000;
+      if (robot) {
+        form.reset();
+        statut.classList.add('ok');
+        statut.textContent = 'Merci, ton message est bien parti ! Je te réponds très vite 🫡';
+        return;
+      }
+      if ((message.match(/https?:\/\/|www\./gi) || []).length > 3) {
+        statut.classList.add('erreur');
+        statut.textContent = 'Trop de liens dans le message : garde les 3 plus importants 🙏';
+        return;
+      }
+      // Pas plus d'un envoi par minute depuis le même navigateur
+      let dernierEnvoi = 0;
+      try { dernierEnvoi = Number(localStorage.getItem('dernierEnvoi')) || 0; } catch {}
+      if (Date.now() - dernierEnvoi < 60000) {
+        statut.classList.add('erreur');
+        statut.textContent = "Ton message vient de partir, attends une minute avant d'en renvoyer un.";
+        return;
+      }
+
+      bouton.disabled = true;
       statut.textContent = 'Envoi en cours…';
       try {
         const reponse = await fetch(form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
@@ -959,6 +987,7 @@
           body: new FormData(form),
         });
         if (!reponse.ok) throw new Error();
+        try { localStorage.setItem('dernierEnvoi', Date.now()); } catch {}
         form.reset();
         statut.classList.add('ok');
         statut.textContent = 'Merci, ton message est bien parti ! Je te réponds très vite 🫡';
