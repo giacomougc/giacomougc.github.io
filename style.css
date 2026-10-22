@@ -257,7 +257,25 @@ a { color: inherit; text-decoration: none; }
 /* Lecture sur place : le lecteur YouTube prend la place de la miniature */
 .video.en-lecture { cursor: default; }
 .video.en-lecture .video__frame { background: #000; outline: 3px solid var(--jaune); outline-offset: 4px; }
-.video__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; transition: opacity .3s; }
+iframe.en-chargement { opacity: 0; }
+.phone iframe.phone__video { transition: opacity .3s; }
+/* Miniature floutée + indicateur pendant le chargement du lecteur YouTube */
+.video__fond { filter: brightness(.55) blur(2px); }
+.video.en-lecture .video__frame img.video__fond { transform: none; opacity: 1; }
+.video__chargement {
+  position: absolute; inset: 0; margin: auto;
+  width: fit-content; height: fit-content;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  color: #fff; font-weight: 700; font-size: .9rem;
+}
+.video__chargement::before {
+  content: "";
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 4px solid rgba(255,255,255,.3); border-top-color: var(--jaune);
+  animation: tourne .8s linear infinite;
+}
+@keyframes tourne { to { rotate: 360deg; } }
 .videos.filtrees .video.en-lecture { animation: none; }
 .video__resultats { list-style: none; margin-top: 10px; padding-left: 10px; border-left: 3px solid var(--jaune); display: grid; gap: 4px; }
 .video__resultats li { color: #bbb; font-size: .85rem; line-height: 1.35; }

@@ -33,6 +33,9 @@
     ]
   }
   </script>
+  <!-- Connexion anticipée à YouTube : le premier lecteur démarre plus vite -->
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -696,7 +699,15 @@
       lecteurHero.allow = 'autoplay; fullscreen; picture-in-picture';
       lecteurHero.allowFullscreen = true;
       lecteurHero.referrerPolicy = 'strict-origin-when-cross-origin';
-      telephone.replaceChildren(lecteurHero);
+      // La miniature reste dessous avec un indicateur tant que YouTube charge
+      const chargement = document.createElement('span');
+      chargement.className = 'video__chargement';
+      chargement.textContent = 'Chargement…';
+      lecteurHero.classList.add('en-chargement');
+      lecteurHero.addEventListener('load', () => lecteurHero.classList.remove('en-chargement'));
+      telephone.querySelector('.phone__lecture').remove();
+      telephone.querySelector('img').classList.add('video__fond');
+      telephone.append(chargement, lecteurHero);
       telephone.classList.add('en-lecture');
     });
 
@@ -773,7 +784,16 @@
 
       const cadre = document.createElement('span');
       cadre.className = 'video__frame';
+      // Pendant que YouTube charge : la miniature reste visible avec un indicateur (sinon cadre noir)
+      const fond = bouton.querySelector('img').cloneNode();
+      fond.className = 'video__fond';
+      const chargement = document.createElement('span');
+      chargement.className = 'video__chargement';
+      chargement.textContent = 'Chargement…';
+      cadre.append(fond, chargement);
       const lecteurIci = document.createElement('iframe');
+      lecteurIci.className = 'en-chargement';
+      lecteurIci.addEventListener('load', () => lecteurIci.classList.remove('en-chargement'));
       lecteurIci.src = 'https://www.youtube.com/embed/' + bouton.dataset.youtube + '?autoplay=1&rel=0&playsinline=1';
       lecteurIci.title = bouton.querySelector('img').alt;
       lecteurIci.allow = 'autoplay; fullscreen; picture-in-picture';
