@@ -1,7 +1,7 @@
 # Giacomo Colomer — Portfolio UGC
 
 Site une page pour Giacomo Colomer, créateur de contenu UGC à Nîmes.
-En ligne : https://giacomougc.github.io/
+En ligne : https://giacomo-ugc.fr/
 
 - `index.html` : contenu de la page (+ le JavaScript en bas du fichier)
 - `style.css` : mise en forme
