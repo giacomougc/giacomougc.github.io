@@ -163,12 +163,13 @@
         <button class="filtre" data-filtre="tech" aria-pressed="false">📱 Tech</button>
         <button class="filtre" data-filtre="mode" aria-pressed="false">👕 Mode</button>
         <button class="filtre" data-filtre="cuisine" aria-pressed="false">🍳 Cuisine</button>
+        <button class="filtre" data-filtre="famille" aria-pressed="false">👨‍👩‍👧 Famille</button>
         <button class="filtre" data-filtre="tout" aria-pressed="false">Tout voir</button>
       </div>
       <div class="videos">
         <!-- Chaque vidéo : data-youtube = identifiant YouTube (la partie après watch?v=)
              ou data-post = numéro du post LinkedIn (urn:li:activity:…)
-             data-theme = thématique (doit correspondre à un bouton data-filtre ci-dessus)
+             data-theme = thématique(s) séparées par un espace (chacune doit correspondre à un bouton data-filtre ci-dessus)
              data-une = rang dans la sélection affichée à l'arrivée (1 vidéo par thématique, 1 = en premier)
              Résultats à mettre en avant (optionnel) : data-resultats="*436K* impressions | *31K+* clics"
              → un badge par résultat sur la miniature + la liste sous la vidéo pendant la lecture.
@@ -435,7 +436,7 @@
         </button>
 
         <!-- 💍 Bijoux -->
-        <button class="video" data-youtube="EmPRB02NnfU" data-theme="bijoux" data-une="6">
+        <button class="video" data-youtube="EmPRB02NnfU" data-theme="bijoux famille" data-une="6">
           <span class="video__frame">
             <img src="images/videos/EmPRB02NnfU.webp" alt="Vidéo Vert Jade" loading="lazy">
             <span class="video__play">▶</span>
@@ -613,7 +614,7 @@
         <li><button class="tag" data-vers="gestion">🧾 Gestion & facturation</button></li>
         <li><button class="tag" data-vers="cuisine">🍳 Cuisine</button></li>
         <li><span class="tag">🥊 Sport & fitness</span></li>
-        <li><button class="tag" data-vers="bijoux">👨‍👩‍👧 Famille</button></li>
+        <li><button class="tag" data-vers="famille">👨‍👩‍👧 Famille</button></li>
       </ul>
       <p class="univers__note">
         Le jour, je gère une équipe dans le secteur public. Le soir, je coache des boxeurs sur le ring.
@@ -858,7 +859,7 @@
     const filtres = document.querySelectorAll('.filtre');
     // "une" = la sélection affichée à l'arrivée (data-une = rang), "tout" = toutes les vidéos
     const grille = document.querySelector('.videos');
-    const garde = (video, theme) => theme === 'tout' || (theme === 'une' ? !!video.dataset.une : video.dataset.theme === theme);
+    const garde = (video, theme) => theme === 'tout' || (theme === 'une' ? !!video.dataset.une : video.dataset.theme.split(' ').includes(theme));
     const filtrer = (theme, anime) => {
       arreter();
       filtres.forEach((f) => f.setAttribute('aria-pressed', f.dataset.filtre === theme));
