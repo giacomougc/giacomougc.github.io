@@ -204,7 +204,6 @@ a { color: inherit; text-decoration: none; }
   padding: 12px 0;
   animation: defile var(--duree, 80s) linear infinite;
 }
-.brands__defile:hover .brands__grid { animation-play-state: paused; }
 @keyframes defile { to { transform: translateX(-50%); } }
 .brand-chip {
   background: #fff;

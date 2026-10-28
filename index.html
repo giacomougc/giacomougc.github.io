@@ -39,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261028">
+  <link rel="stylesheet" href="style.css?v=20261028b">
 </head>
 <body>
 
@@ -967,6 +967,19 @@
       };
       if (img.complete) dimensionner(); else img.addEventListener('load', dimensionner);
     });
+
+    // Au survol, le défilement ralentit en douceur au lieu de s'arrêter
+    const defile = document.querySelector('.brands__defile');
+    let vitesse = 1, cible = 1, transition = null;
+    const accorder = () => {
+      vitesse += (cible - vitesse) * 0.08;
+      if (Math.abs(cible - vitesse) < 0.01) vitesse = cible;
+      brandsGrid.getAnimations().forEach((a) => { a.playbackRate = vitesse; });
+      transition = vitesse === cible ? null : requestAnimationFrame(accorder);
+    };
+    const changerVitesse = (v) => { cible = v; if (!transition) transition = requestAnimationFrame(accorder); };
+    defile.addEventListener('mouseenter', () => changerVitesse(0.25));
+    defile.addEventListener('mouseleave', () => changerVitesse(1));
 
     // Avis clients : les cartes arrivent en cascade quand la section devient visible
     const grilleAvis = document.querySelector('.avis__grille');
