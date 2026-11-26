@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tarifs vidéo UGC — Simuler mon tarif | Giacomo Colomer</title>
+  <meta name="description" content="Combien coûte une vidéo UGC ? Simulez votre tarif en direct : vidéo montée ou rushs, droits publicitaires Meta et TikTok, hooks, script, duo, livraison accélérée. Créateur UGC à Nîmes.">
+  <link rel="canonical" href="https://giacomo-ugc.fr/tarifs">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:url" content="https://giacomo-ugc.fr/tarifs">
+  <meta property="og:title" content="Simuler mon tarif — vidéo UGC | Giacomo Colomer">
+  <meta property="og:description" content="Format, droits pub, options : simule le prix de tes vidéos UGC en direct.">
+  <meta property="og:image" content="https://giacomo-ugc.fr/images/partage.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261028b">
+  <style>
+    /* ---------- Page tarifs ---------- */
+    .tarifs-hero { padding-bottom: 40px; }
+    .tarifs-hero h1 { font-size: clamp(2.6rem, 7vw, 5rem); margin-bottom: 20px; }
+    .tarifs-hero h1 em { font-style: normal; color: var(--rouge); }
+    .tarifs-hero p:not(.eyebrow) { max-width: 640px; font-size: 1.1rem; color: var(--doux); }
+
+    .simu { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 40px; align-items: start; padding-top: 0; }
+    .simu__etapes { display: flex; flex-direction: column; gap: 24px; }
+
+    .etape { background: #fff; border-radius: var(--rayon); padding: 28px; border: 0; }
+    .etape legend { float: left; width: 100%; padding: 0; margin-bottom: 18px; }
+    .etape legend + * { clear: both; }
+    .etape__num { display: inline-block; font-family: "Anton", Impact, sans-serif; color: var(--rouge); margin-right: 10px; font-size: 1.2rem; }
+    .etape__titre { font-weight: 700; font-size: 1.15rem; }
+    .etape__aide { display: block; color: var(--doux); font-size: .9rem; font-weight: 400; margin-top: 4px; }
+
+    /* Choix sous forme de cartes cliquables */
+    .choix { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+    .choix label { position: relative; cursor: pointer; }
+    .choix input { position: absolute; opacity: 0; pointer-events: none; }
+    .choix__carte {
+      display: flex; flex-direction: column; gap: 4px; height: 100%;
+      padding: 16px 18px; border: 2px solid #e4dfd6; border-radius: 14px;
+      background: var(--creme); transition: border-color .15s, background .15s, transform .15s;
+    }
+    .choix__carte b { font-size: 1rem; }
+    .choix__carte small { color: var(--doux); font-size: .85rem; line-height: 1.4; }
+    .choix__prix { font-weight: 700; color: var(--noir); margin-top: auto; padding-top: 6px; }
+    .choix label:hover .choix__carte { border-color: #c9c1b4; }
+    .choix input:checked + .choix__carte { border-color: var(--noir); background: var(--jaune); }
+    .choix input:checked + .choix__carte small { color: #3a3a3a; }
+    .choix input:focus-visible + .choix__carte { outline: 3px solid var(--rouge); outline-offset: 2px; }
+
+    /* Compteurs + / − */
+    .ligne { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid #eee8de; }
+    .ligne:first-of-type { border-top: 0; padding-top: 0; }
+    .ligne__texte b { display: block; }
+    .ligne__texte small { color: var(--doux); font-size: .85rem; }
+    .compteur { display: inline-flex; align-items: center; gap: 4px; background: var(--creme); border-radius: 999px; padding: 4px; flex-shrink: 0; }
+    .compteur button {
+      width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer;
+      background: #fff; font: 700 1.2rem/1 "Inter", sans-serif; color: var(--noir);
+    }
+    .compteur button:hover:not(:disabled) { background: var(--jaune); }
+    .compteur button:disabled { opacity: .35; cursor: default; }
+    .compteur button:focus-visible { outline: 3px solid var(--rouge); outline-offset: 1px; }
+    .compteur output { min-width: 36px; text-align: center; font-weight: 700; font-size: 1.1rem; }
+    .remise-info { margin-top: 14px; font-size: .9rem; font-weight: 600; color: #1f7a44; min-height: 1.4em; }
+
+    /* Interrupteurs */
+    .bascule { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid #eee8de; cursor: pointer; }
+    .bascule:first-of-type { border-top: 0; padding-top: 0; }
+    .bascule input { position: absolute; opacity: 0; pointer-events: none; }
+    .bascule__piste { position: relative; width: 50px; height: 28px; border-radius: 999px; background: #d8d2c8; flex-shrink: 0; transition: background .15s; }
+    .bascule__piste::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: translate .15s; }
+    .bascule input:checked ~ .bascule__piste { background: var(--noir); }
+    .bascule input:checked ~ .bascule__piste::after { translate: 22px 0; background: var(--jaune); }
+    .bascule input:focus-visible ~ .bascule__piste { outline: 3px solid var(--rouge); outline-offset: 2px; }
+
+    /* Options vidéo par vidéo */
+    .options-videos { display: flex; flex-direction: column; gap: 10px; }
+    .opt-video { border: 2px solid #e4dfd6; border-radius: 14px; background: var(--creme); }
+    .opt-video[open] { border-color: var(--noir); background: #fff; }
+    .opt-video summary {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 18px; cursor: pointer; list-style: none; font-weight: 700;
+    }
+    .opt-video summary::-webkit-details-marker { display: none; }
+    .opt-video summary::after { content: "▾"; font-size: .8em; transition: rotate .2s; }
+    .opt-video[open] summary::after { rotate: 180deg; }
+    .opt-video summary:focus-visible { outline: 3px solid var(--rouge); outline-offset: 2px; border-radius: 12px; }
+    .opt-video__resume { margin-left: auto; font-weight: 500; font-size: .85rem; color: var(--doux); text-align: right; }
+    .opt-video__corps { padding: 0 18px 8px; }
+    .copier {
+      margin-top: 12px; font: inherit; font-weight: 600; font-size: .9rem; cursor: pointer;
+      background: none; border: 2px dashed #c9c1b4; border-radius: 12px; padding: 10px 14px; width: 100%; color: var(--texte);
+    }
+    .copier:hover { border-color: var(--noir); background: var(--creme); }
+    .bascule--seule { margin-top: 18px; border-top: 0; padding: 14px 18px; background: var(--creme); border-radius: 14px; }
+
+    /* Récapitulatif */
+    .recap { position: sticky; top: 90px; background: var(--noir); color: #fff; border-radius: var(--rayon); padding: 28px; }
+    .recap .eyebrow { color: var(--jaune); }
+    .recap__lignes { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: .92rem; margin-bottom: 18px; }
+    .recap__lignes li { display: flex; justify-content: space-between; gap: 12px; }
+    .recap__lignes li span:first-child { color: #bbb; }
+    .recap__lignes li span:last-child { white-space: nowrap; }
+    .recap__lignes .moins span:last-child { color: #7ee2a8; }
+    .recap__total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #333; padding-top: 16px; }
+    .recap__total span { font-weight: 600; }
+    .recap__total strong { font-family: "Anton", Impact, sans-serif; font-weight: 400; font-size: 3rem; color: var(--jaune); line-height: 1; }
+    .recap__par { text-align: right; color: #999; font-size: .85rem; margin-top: 4px; }
+    .recap__delai { margin: 18px 0; padding: 12px 14px; border-radius: 12px; background: #1f1f1f; font-size: .92rem; }
+    .recap__delai b { color: var(--jaune); }
+    .recap .btn { width: 100%; text-align: center; cursor: pointer; font: inherit; font-weight: 700; }
+    .recap__note { margin-top: 14px; font-size: .8rem; color: #999; line-height: 1.5; }
+
+    /* Barre de total en bas d'écran sur mobile */
+    .barre-total { display: none; }
+
+    /* Inclus / non inclus */
+    .inclus { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .inclus article { background: #fff; border-radius: var(--rayon); padding: 28px; }
+    .inclus h3 { margin-bottom: 14px; }
+    .inclus ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .inclus li { padding-left: 28px; position: relative; }
+    .inclus li::before { position: absolute; left: 0; }
+    .inclus__oui li::before { content: "✓"; color: #1f9d55; font-weight: 700; }
+    .inclus__non li::before { content: "✕"; color: var(--rouge); font-weight: 700; }
+    .section h2.petit { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 32px; }
+
+    /* Prise de contact */
+    .devis .champs { max-width: 760px; }
+    .devis__recap { max-width: 760px; background: #1f1f1f; color: #ddd; border-radius: 12px; padding: 16px 18px; margin-bottom: 24px; font-size: .9rem; white-space: pre-line; }
+    .devis .champs label { color: #fff; }
+    .devis .btn { cursor: pointer; font: inherit; font-weight: 700; }
+    .devis .btn:disabled { opacity: .6; cursor: wait; }
+    .devis .formulaire__statut.ok { color: #7ee2a8; }
+    .devis__intro { color: #bbb; font-size: 1.1rem; max-width: 640px; margin: -28px 0 28px; }
+    .devis__ou { color: #999; margin: 28px 0 16px; font-weight: 600; }
+
+    /* Popup Creative Strategy (reprend le style .formulaire de style.css) */
+    .creative { width: min(560px, 92vw); text-align: center; }
+    .creative[open] { animation: creativeOuvre .25s ease-out; }
+    @keyframes creativeOuvre { from { opacity: 0; translate: 0 16px; } }
+    .creative__emoji { font-size: 3rem; line-height: 1; margin-bottom: 10px; }
+    .creative h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 16px; }
+    .creative h2 em { font-style: normal; color: var(--rouge); }
+    .creative__texte { color: #444; margin-bottom: 12px; }
+    .creative__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 22px 0 14px; }
+    .creative__actions .btn--ghost { color: var(--noir); }
+    .creative__non { background: none; border: 0; font: inherit; font-size: .9rem; color: var(--doux); text-decoration: underline; cursor: pointer; }
+    @media (prefers-reduced-motion: reduce) { .creative[open] { animation: none; } }
+    .btn--wa { background: #25d366; border-color: #25d366; color: #08321a; }
+    .recap .btn + .btn { margin-top: 10px; }
+    .recap .btn--ghost { color: #fff; }
+    [data-whatsapp][hidden] { display: none !important; }
+
+    @media (max-width: 960px) {
+      .simu { grid-template-columns: 1fr; }
+      .recap { position: static; }
+      .barre-total {
+        display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 20;
+        align-items: center; justify-content: space-between; gap: 12px;
+        background: var(--noir); color: #fff; border-radius: 999px; padding: 10px 10px 10px 22px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.25); transition: translate .2s, opacity .2s;
+      }
+      .barre-total strong { font-family: "Anton", Impact, sans-serif; font-weight: 400; font-size: 1.6rem; color: var(--jaune); }
+      .barre-total.cachee { translate: 0 140%; opacity: 0; }
+      .footer { padding-bottom: 90px; }
+    }
+    @media (max-width: 600px) {
+      .etape, .recap, .inclus article { padding: 20px; }
+      .inclus { grid-template-columns: 1fr; }
+      .devis .champs { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <a href="./" class="nav__logo">GIACOMO<span>.</span>UGC</a>
+    <nav class="nav__links">
+      <a href="./#portfolio">Portfolio</a>
+      <a href="./#resultats">Résultats</a>
+      <a href="#devis" class="btn btn--small">Me contacter</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section tarifs-hero">
+      <p class="eyebrow">Tarifs transparents</p>
+      <h1>Simule ton tarif <em>en 30&nbsp;secondes</em></h1>
+      <p>Format, nombre de vidéos, droits pub, options : coche ce dont tu as besoin, le prix (HT) se calcule en direct.
+        Le brief, les livrables, les droits et le planning sont confirmés ensemble avant de lancer quoi que ce soit.</p>
+    </section>
+
+    <!-- SIMULATEUR : tous les prix sont dans l'objet TARIFS du script en bas de page -->
+    <section class="section simu" id="simulateur">
+      <form class="simu__etapes" id="simu" onsubmit="return false">
+
+        <fieldset class="etape">
+          <legend><span class="etape__num">01</span><span class="etape__titre">Le format</span>
+            <span class="etape__aide">1 hook inclus dans chaque vidéo.</span></legend>
+          <div class="choix">
+            <label><input type="radio" name="format" value="montee" checked>
+              <span class="choix__carte"><b>Vidéo tournée et montée</b><small>Prête à publier : rythme, textes, sous-titres, musique.</small><span class="choix__prix" data-prix="video.montee"></span></span></label>
+            <label><input type="radio" name="format" value="rushs">
+              <span class="choix__carte"><b>Rushs bruts</b><small>Sans montage, triés et nommés selon le script. Pour une seule vidéo.</small><span class="choix__prix" data-prix="video.rushs"></span></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="etape">
+          <legend><span class="etape__num">02</span><span class="etape__titre">Le nombre de vidéos</span>
+            <span class="etape__aide">−10 % dès 3 vidéos, −15 % dès 5 vidéos (sur le prix des vidéos).</span></legend>
+          <div class="ligne">
+            <span class="ligne__texte"><b>Vidéos</b><small>Même produit ou produits différents.</small></span>
+            <span class="compteur" data-champ="videos" data-min="1" data-max="20"><button type="button" data-pas="-1" aria-label="Une vidéo de moins">−</button><output>1</output><button type="button" data-pas="1" aria-label="Une vidéo de plus">+</button></span>
+          </div>
+          <p class="remise-info" id="remise-info" aria-live="polite"></p>
+        </fieldset>
+
+        <fieldset class="etape">
+          <legend><span class="etape__num">03</span><span class="etape__titre">Les droits publicitaires</span>
+            <span class="etape__aide">Pour diffuser la vidéo en pub sur Meta et TikTok. Prix par vidéo.</span></legend>
+          <div class="choix">
+            <label><input type="radio" name="droits" value="0" checked>
+              <span class="choix__carte"><b>Organique</b><small>Pas de pub : tes réseaux uniquement.</small><span class="choix__prix">Inclus</span></span></label>
+            <label><input type="radio" name="droits" value="3">
+              <span class="choix__carte"><b>3 mois</b><small>Idéal pour tester.</small><span class="choix__prix" data-prix="droits.3" data-suffixe=" / vidéo"></span></span></label>
+            <label><input type="radio" name="droits" value="6">
+              <span class="choix__carte"><b>6 mois</b><small>Le temps de scaler.</small><span class="choix__prix" data-prix="droits.6" data-suffixe=" / vidéo"></span></span></label>
+            <label><input type="radio" name="droits" value="12">
+              <span class="choix__carte"><b>1 an</b><small>Pour une pub qui dure.</small><span class="choix__prix" data-prix="droits.12" data-suffixe=" / vidéo"></span></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="etape">
+          <legend><span class="etape__num">04</span><span class="etape__titre">Les options</span>
+            <span class="etape__aide">Vidéo par vidéo : chaque vidéo a ses propres options.</span></legend>
+          <!-- Un panneau par vidéo, généré par le script (fonction rendreOptions) -->
+          <div class="options-videos" id="options-videos"></div>
+          <button type="button" class="copier" id="copier" hidden>↧ Appliquer les options de la vidéo 1 à toutes les vidéos</button>
+          <label class="bascule bascule--seule"><span class="ligne__texte"><b>C'est notre première collaboration</b><small>Un hook supplémentaire offert 🎁</small></span>
+            <input type="checkbox" name="premiere"><span class="bascule__piste"></span></label>
+        </fieldset>
+
+        <fieldset class="etape">
+          <legend><span class="etape__num">05</span><span class="etape__titre">Le produit</span>
+            <span class="etape__aide">Pour estimer le délai de livraison.</span></legend>
+          <div class="choix">
+            <label><input type="radio" name="produit" value="classique" checked>
+              <span class="choix__carte"><b>Produit classique</b><small>Cosmétique, tech, maison, alimentaire…</small></span></label>
+            <label><input type="radio" name="produit" value="jeu">
+              <span class="choix__carte"><b>Jeu de société</b><small>Je le teste à fond avant de tourner.</small></span></label>
+            <label><input type="radio" name="produit" value="jeu-connu">
+              <span class="choix__carte"><b>Jeu que je connais déjà</b><small>Déjà dans ma collection.</small></span></label>
+          </div>
+        </fieldset>
+      </form>
+
+      <aside class="recap" aria-labelledby="recap-titre">
+        <p class="eyebrow" id="recap-titre">Ton estimation</p>
+        <ul class="recap__lignes" id="recap-lignes"></ul>
+        <div class="recap__total"><span>Total HT</span><strong id="total">0 €</strong></div>
+        <p class="recap__par" id="par-video"></p>
+        <p class="recap__delai" id="delai"></p>
+        <a href="#" class="btn btn--wa" data-whatsapp target="_blank" rel="noopener">💬 En parler sur WhatsApp</a>
+        <a href="#devis" class="btn btn--ghost">Me contacter par e-mail</a>
+        <p class="recap__note">Prix hors taxes. C'est une estimation pour te donner une idée de mes tarifs : on affine ensemble selon ton projet. Un retournage après validation du script est une nouvelle prestation, chiffrée à part.</p>
+      </aside>
+    </section>
+
+    <!-- INCLUS / NON INCLUS -->
+    <section class="section" style="padding-top: 20px;">
+      <p class="eyebrow">Pas de mauvaise surprise</p>
+      <h2 class="petit">Ce qui est inclus</h2>
+      <div class="inclus">
+        <article class="inclus__oui">
+          <h3>Inclus</h3>
+          <ul>
+            <li>1 hook par vidéo</li>
+            <li>2 allers-retours de modifications de montage : rythme, textes, sous-titres, musique</li>
+            <li>Format vertical 9:16, prêt pour Reels, TikTok et Shorts</li>
+            <li>Remise volume : −10 % dès 3 vidéos, −15 % dès 5 vidéos</li>
+          </ul>
+        </article>
+        <article class="inclus__non">
+          <h3>Pas inclus</h3>
+          <ul>
+            <li>Un retournage après validation du script : c'est une nouvelle prestation, chiffrée à part</li>
+            <li>La remise volume ne s'applique pas aux droits pub ni aux options</li>
+            <li>Les rushs bruts ne servent qu'à une seule vidéo</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- PRISE DE CONTACT : WhatsApp ou e-mail (FormSubmit, comme le formulaire de l'accueil) -->
+    <section class="section section--dark devis" id="devis">
+      <p class="eyebrow">Dernier round</p>
+      <h2>On en parle&nbsp;?</h2>
+      <p class="devis__intro">Tu as maintenant une idée de mes tarifs. Chaque projet est différent : écris-moi avec ton estimation, on en discute et on ajuste ensemble.</p>
+      <p class="devis__recap" id="devis-recap"></p>
+      <a href="#" class="btn btn--wa" data-whatsapp target="_blank" rel="noopener">💬 M'écrire sur WhatsApp</a>
+      <p class="devis__ou" data-whatsapp>Ou par e-mail :</p>
+      <form id="form-devis" action="https://formsubmit.co/giacomo.ugc@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Prise de contact depuis le simulateur de tarifs UGC">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" class="piege" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="_blacklist" value="casino, viagra, cialis, backlinks, seo services, porn, betting, bit.ly">
+        <input type="hidden" name="Simulation">
+        <input type="hidden" name="Total estimé">
+        <div class="champs">
+          <label>Prénom et nom *
+            <input type="text" name="Nom" required maxlength="80" autocomplete="name">
+          </label>
+          <label>Marque / entreprise
+            <input type="text" name="Marque" maxlength="80" autocomplete="organization">
+          </label>
+          <label class="champs__large">E-mail *
+            <input type="email" name="email" required maxlength="120" autocomplete="email">
+          </label>
+          <label class="champs__large">Ton projet en quelques mots
+            <textarea name="Message" rows="4" maxlength="3000" placeholder="Le produit, l'objectif, la date de diffusion…"></textarea>
+          </label>
+        </div>
+        <button type="submit" class="btn">Envoyer mon message</button>
+        <p class="formulaire__statut" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <!-- POPUP CREATIVE STRATEGY : s'ouvre une seule fois quand on atteint SEUIL_CREATIVE vidéos -->
+  <dialog class="formulaire creative" id="creative" aria-labelledby="creative-titre">
+    <button class="formulaire__fermer" data-fermer aria-label="Fermer">✕</button>
+    <p class="creative__emoji" aria-hidden="true">🧠</p>
+    <p class="eyebrow">Beaucoup de contenu en vue</p>
+    <h2 id="creative-titre">Et si on passait à la <em>Creative Strategy</em>&nbsp;?</h2>
+    <p class="creative__texte">Avec <b id="creative-nb">5 vidéos</b>, on ne parle plus d'un coup isolé mais d'un vrai combat.
+      La Creative Strategy, c'est un plan de match pour toute ta production : analyse de tes concurrents et des tendances, angles, scripts, sourcing des créateurs, plan de tests et suivi des résultats.</p>
+    <p class="creative__texte">Ça peut être plus adapté (et plus rentable) que des vidéos à l'unité. On en discute ?</p>
+    <div class="creative__actions">
+      <a href="#" class="btn btn--wa" id="creative-wa" target="_blank" rel="noopener">💬 En parler sur WhatsApp</a>
+      <a href="#devis" class="btn btn--ghost" id="creative-mail">Par e-mail</a>
+    </div>
+    <button type="button" class="creative__non" data-fermer>Non merci, je continue ma simulation</button>
+  </dialog>
+
+  <div class="barre-total" id="barre-total">
+    <span>Total HT <strong id="total-mobile">0 €</strong></span>
+    <a href="#devis" class="btn btn--small">En parler</a>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 Giacomo Colomer · Créateur UGC · Nîmes, Occitanie · <a href="./">Retour au portfolio</a></p>
+  </footer>
+
+  <script>
+    // ===== TARIFS : modifier les prix ici uniquement =====
+    const TARIFS = {
+      video: { montee: 200, rushs: 150 },
+      remises: [ { des: 5, taux: 0.15 }, { des: 3, taux: 0.10 } ], // sur le prix des vidéos uniquement
+      droits: { 0: 0, 3: 60, 6: 120, 12: 200 },                     // par vidéo, jamais remisés
+      hook: 30, script: 30, duo: 50, express: 50, whitelisting: 50,  // par vidéo (whitelisting : par mois)
+      delais: {
+        classique:   { normal: '7 jours',                               express: '2 jours ouvrés' },
+        jeu:         { normal: '2 semaines après réception du jeu',     express: '4 jours ouvrés' },
+        'jeu-connu': { normal: '1 semaine',                             express: '2 jours ouvrés' },
+      },
+    };
+
+    // Numéro WhatsApp au format international, sans + ni espaces (ex. 33612345678). Vide = boutons WhatsApp masqués.
+    const WHATSAPP = '33667972798';
+    document.querySelectorAll('[data-whatsapp]').forEach((el) => { el.hidden = !WHATSAPP; });
+
+    const euros = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' €';
+    const form = document.getElementById('simu');
+    const etat = { videos: 1 };
+    // Options de chaque vidéo (une entrée par vidéo)
+    const optionsVide = () => ({ hooks: 0, script: false, duo: false, express: false, whitelisting: 0 });
+    const opts = [optionsVide()];
+    const LIMITES = { videos: [1, 20], hooks: [0, 5], whitelisting: [0, 12] };
+    const pluriel = (n, mot, s = 's') => `${n} ${mot}${n > 1 ? s : ''}`;
+
+    // Affiche les prix écrits dans TARIFS à côté de chaque choix
+    const affichePrix = (racine) => racine.querySelectorAll('[data-prix]').forEach((el) => {
+      const prix = el.dataset.prix.split('.').reduce((o, k) => o[k], TARIFS);
+      el.textContent = euros(prix) + (el.dataset.suffixe || '');
+    });
+    affichePrix(document);
+
+    // Compteur + / − : data-champ = la valeur, data-v = numéro de la vidéo (absent pour le nombre de vidéos)
+    const compteur = (champ, v, aide) => `
+      <span class="compteur" data-champ="${champ}"${v === undefined ? '' : ` data-v="${v}"`}>
+        <button type="button" data-pas="-1" aria-label="${aide} : moins">−</button><output></output><button type="button" data-pas="1" aria-label="${aide} : plus">+</button>
+      </span>`;
+    const valeur = (c) => c.dataset.v === undefined ? etat[c.dataset.champ] : opts[c.dataset.v][c.dataset.champ];
+    const majCompteurs = () => document.querySelectorAll('.compteur').forEach((c) => {
+      const [min, max] = LIMITES[c.dataset.champ];
+      const val = valeur(c);
+      c.querySelector('output').textContent = val;
+      c.querySelector('[data-pas="-1"]').disabled = val <= min;
+      c.querySelector('[data-pas="1"]').disabled = val >= max;
+    });
+
+    // Un panneau d'options par vidéo
+    const zoneOptions = document.getElementById('options-videos');
+    function rendreOptions() {
+      const ouverts = [...zoneOptions.querySelectorAll('details')].map((d) => d.open);
+      zoneOptions.innerHTML = opts.map((o, v) => `
+        <details class="opt-video" ${(ouverts[v] ?? (v === 0 || v >= ouverts.length)) ? 'open' : ''}>
+          <summary>Vidéo ${v + 1}<span class="opt-video__resume" data-resume="${v}"></span></summary>
+          <div class="opt-video__corps">
+            <div class="ligne">
+              <span class="ligne__texte"><b>Hooks supplémentaires</b><small><span data-prix="hook"></span> l'unité. Plusieurs accroches = plus de tests en pub.</small></span>
+              ${compteur('hooks', v, `Hooks supplémentaires de la vidéo ${v + 1}`)}
+            </div>
+            <label class="bascule"><span class="ligne__texte"><b>Écriture du script</b><small><span data-prix="script"></span>. Sinon, tu fournis le script.</small></span>
+              <input type="checkbox" data-v="${v}" data-opt="script" ${o.script ? 'checked' : ''}><span class="bascule__piste"></span></label>
+            <label class="bascule"><span class="ligne__texte"><b>Tournage en duo avec Clémentine</b><small><span data-prix="duo"></span>. Format couple, dialogue, mise en situation.</small></span>
+              <input type="checkbox" data-v="${v}" data-opt="duo" ${o.duo ? 'checked' : ''}><span class="bascule__piste"></span></label>
+            <label class="bascule"><span class="ligne__texte"><b>Livraison accélérée</b><small><span data-prix="express"></span>.</small></span>
+              <input type="checkbox" data-v="${v}" data-opt="express" ${o.express ? 'checked' : ''}><span class="bascule__piste"></span></label>
+            <div class="ligne">
+              <span class="ligne__texte"><b>Whitelisting (mois)</b><small>Ta pub diffusée depuis mon compte. <span data-prix="whitelisting"></span> par mois.</small></span>
+              ${compteur('whitelisting', v, `Mois de whitelisting de la vidéo ${v + 1}`)}
+            </div>
+          </div>
+        </details>`).join('');
+      affichePrix(zoneOptions);
+      document.getElementById('copier').hidden = opts.length < 2;
+    }
+
+    // Clics sur les + / −
+    form.addEventListener('click', (e) => {
+      const bouton = e.target.closest('[data-pas]');
+      if (!bouton) return;
+      const c = bouton.closest('.compteur');
+      const [min, max] = LIMITES[c.dataset.champ];
+      const nouvelle = Math.min(max, Math.max(min, valeur(c) + +bouton.dataset.pas));
+      if (c.dataset.v === undefined) {
+        etat[c.dataset.champ] = nouvelle;
+        while (opts.length < nouvelle) opts.push(optionsVide());
+        opts.length = nouvelle;
+        rendreOptions();
+      } else {
+        opts[c.dataset.v][c.dataset.champ] = nouvelle;
+      }
+      calcule();
+      if (c.dataset.champ === 'videos' && nouvelle >= SEUIL_CREATIVE) proposeCreative();
+    });
+
+    // Interrupteurs d'une vidéo
+    form.addEventListener('change', (e) => {
+      if (e.target.dataset.opt) opts[e.target.dataset.v][e.target.dataset.opt] = e.target.checked;
+    });
+
+    document.getElementById('copier').addEventListener('click', () => {
+      for (let v = 1; v < opts.length; v++) opts[v] = { ...opts[0] };
+      rendreOptions(); calcule();
+    });
+
+    // Liste lisible des options d'une vidéo
+    const resumeOptions = (o) => [
+      o.hooks ? pluriel(o.hooks, 'hook') + ' en plus' : '',
+      o.script ? 'script' : '',
+      o.duo ? 'duo' : '',
+      o.express ? 'livraison accélérée' : '',
+      o.whitelisting ? `whitelisting ${o.whitelisting} mois` : '',
+    ].filter(Boolean);
+    const prixOptions = (o) => o.hooks * TARIFS.hook + o.script * TARIFS.script + o.duo * TARIFS.duo
+      + o.express * TARIFS.express + o.whitelisting * TARIFS.whitelisting;
+
+    function calcule() {
+      const d = new FormData(form);
+      const n = etat.videos;
+      const format = d.get('format');
+      const droits = +d.get('droits');
+      const produit = d.get('produit');
+
+      const lignes = [];
+      const ajoute = (libelle, montant) => { if (montant) lignes.push({ libelle, montant }); };
+
+      const prixVideo = TARIFS.video[format];
+      const base = prixVideo * n;
+      ajoute(`${n} ${format === 'montee' ? 'vidéo' : 'lot'}${n > 1 ? 's' : ''} ${format === 'montee' ? 'tournée' + (n > 1 ? 's' : '') + ' et montée' + (n > 1 ? 's' : '') : 'de rushs bruts'} × ${euros(prixVideo)}`, base);
+
+      const remise = TARIFS.remises.find((r) => n >= r.des);
+      if (remise) ajoute(`Remise pack −${remise.taux * 100} %`, -Math.round(base * remise.taux * 100) / 100);
+
+      if (droits) ajoute(`Droits pub ${droits === 12 ? '1 an' : droits + ' mois'} × ${n}`, TARIFS.droits[droits] * n);
+
+      // Options : additionnées sur toutes les vidéos
+      const somme = (cle) => opts.reduce((s, o) => s + +o[cle], 0);
+      const hooks = somme('hooks'), scripts = somme('script'), duos = somme('duo'), express = somme('express'), wl = somme('whitelisting');
+      ajoute(`${pluriel(hooks, 'hook')} en plus`, TARIFS.hook * hooks);
+      if (d.has('premiere') && hooks) ajoute('Hook offert (1re collaboration)', -TARIFS.hook);
+      ajoute(`Écriture du script × ${scripts}`, TARIFS.script * scripts);
+      ajoute(`Duo avec Clémentine × ${duos}`, TARIFS.duo * duos);
+      ajoute(`Livraison accélérée × ${express}`, TARIFS.express * express);
+      ajoute(`Whitelisting (${wl} mois au total)`, TARIFS.whitelisting * wl);
+
+      // Résumé affiché sur chaque panneau vidéo
+      opts.forEach((o, v) => {
+        const el = zoneOptions.querySelector(`[data-resume="${v}"]`);
+        const liste = resumeOptions(o);
+        el.textContent = liste.length ? `${liste.join(' · ')} · +${euros(prixOptions(o))}` : 'Aucune option';
+      });
+      majCompteurs();
+
+      const total = lignes.reduce((s, l) => s + l.montant, 0);
+
+      document.getElementById('recap-lignes').innerHTML = lignes.map((l) =>
+        `<li class="${l.montant < 0 ? 'moins' : ''}"><span>${l.libelle}</span><span>${l.montant < 0 ? '−' + euros(-l.montant) : euros(l.montant)}</span></li>`).join('');
+      document.getElementById('total').textContent = euros(total);
+      document.getElementById('total-mobile').textContent = euros(total);
+      document.getElementById('par-video').textContent = n > 1 ? `soit ${euros(Math.round(total / n * 100) / 100)} par vidéo` : '';
+
+      const delais = TARIFS.delais[produit];
+      const delai = express === 0 ? delais.normal
+        : express === n ? delais.express
+        : `${delais.normal} (${delais.express} pour ${express > 1 ? 'les vidéos' : 'la vidéo'} en livraison accélérée)`;
+      document.getElementById('delai').innerHTML = `⏱️ Livraison : <b>${delai}</b>`;
+
+      // Message d'encouragement sur la remise
+      const info = document.getElementById('remise-info');
+      const prochaine = [...TARIFS.remises].reverse().find((r) => n < r.des);
+      info.textContent = remise
+        ? `✓ Remise de ${remise.taux * 100} % appliquée` + (prochaine ? ` · encore ${prochaine.des - n} vidéo${prochaine.des - n > 1 ? 's' : ''} pour −${prochaine.taux * 100} %` : '')
+        : prochaine ? `Encore ${prochaine.des - n} vidéo${prochaine.des - n > 1 ? 's' : ''} pour −${prochaine.taux * 100} %` : '';
+
+      // Récap texte de l'estimation (envoyé dans l'e-mail et le message WhatsApp)
+      const options = [
+        produit === 'classique' ? 'Produit classique' : produit === 'jeu' ? 'Jeu de société' : 'Jeu de société déjà connu',
+        d.has('premiere') ? 'Première collaboration' : '',
+      ].filter(Boolean);
+      // Détail des options vidéo par vidéo (seulement s'il y en a)
+      const detail = opts.some((o) => resumeOptions(o).length)
+        ? ['', 'Détail des options :', ...opts.map((o, v) => `Vidéo ${v + 1} : ${resumeOptions(o).join(', ') || 'aucune option'}`), '']
+        : [];
+      const texte = lignes.map((l) => `• ${l.libelle} : ${l.montant < 0 ? '−' + euros(-l.montant) : euros(l.montant)}`)
+        .concat(options.map((o) => `• ${o}`), `• Délai : ${delai}`, detail, `Total estimé : ${euros(total)} HT`).flat().join('\n');
+      document.getElementById('devis-recap').textContent = texte;
+      formDevis.elements['Simulation'].value = texte;
+      formDevis.elements['Total estimé'].value = euros(total) + ' HT';
+      const messageWa = "Salut Giacomo ! J'ai fait une simulation sur ton site :\n\n" + texte + "\n\nOn peut en parler ?";
+      document.getElementById('creative-nb').textContent = pluriel(n, 'vidéo');
+      document.getElementById('creative-wa').href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(
+        "Salut Giacomo ! Je pars sur " + pluriel(n, 'vidéo') + " et ta Creative Strategy m'intéresse. Voici ma simulation :\n\n" + texte + "\n\nOn en discute ?");
+      document.querySelectorAll('a[data-whatsapp]').forEach((a) => { a.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(messageWa); });
+    }
+
+    const formDevis = document.getElementById('form-devis');
+    form.addEventListener('change', calcule);
+    rendreOptions();
+    calcule();
+
+    // ----- Popup Creative Strategy : une seule fois par visite, dès SEUIL_CREATIVE vidéos -----
+    const SEUIL_CREATIVE = 5;
+    const popupCreative = document.getElementById('creative');
+    let creativeVue = false;
+    try { creativeVue = sessionStorage.getItem('creativeVue') === '1'; } catch {}
+    function proposeCreative() {
+      if (creativeVue || popupCreative.open) return;
+      creativeVue = true;
+      try { sessionStorage.setItem('creativeVue', '1'); } catch {}
+      setTimeout(() => popupCreative.showModal(), 450); // laisse le temps de voir le total bouger
+    }
+    popupCreative.querySelectorAll('[data-fermer]').forEach((b) => b.addEventListener('click', () => popupCreative.close()));
+    // Clic à côté de la fenêtre (sur le fond sombre) = fermer
+    popupCreative.addEventListener('click', (e) => {
+      if (e.target !== popupCreative) return;
+      const r = popupCreative.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) popupCreative.close();
+    });
+    document.getElementById('creative-wa').addEventListener('click', () => popupCreative.close());
+    document.getElementById('creative-mail').addEventListener('click', () => {
+      popupCreative.close();
+      const message = formDevis.elements.Message;
+      if (!message.value.includes('Creative Strategy')) {
+        message.value = ('La Creative Strategy m\'intéresse, on peut en discuter ?\n' + message.value).trim();
+      }
+    });
+
+    // Mobile : la barre de total se cache quand le récap ou le formulaire est visible
+    const barre = document.getElementById('barre-total');
+    const visibles = new Set();
+    const obs = new IntersectionObserver((entrees) => {
+      entrees.forEach((e) => e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target));
+      barre.classList.toggle('cachee', visibles.size > 0);
+    });
+    obs.observe(document.querySelector('.recap'));
+    obs.observe(document.getElementById('devis'));
+    obs.observe(document.querySelector('.tarifs-hero'));
+
+    // Envoi du message (mêmes protections anti-spam que le formulaire de l'accueil)
+    const ouvertLe = Date.now();
+    const statut = formDevis.querySelector('.formulaire__statut');
+    formDevis.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bouton = formDevis.querySelector('button[type="submit"]');
+      statut.className = 'formulaire__statut';
+      const merci = "Merci, ton message est bien parti ! Je te réponds très vite pour qu'on en parle 🫡";
+      if (formDevis.elements._honey.value !== '' || Date.now() - ouvertLe < 4000) {
+        formDevis.reset(); calcule(); statut.classList.add('ok'); statut.textContent = merci; return;
+      }
+      if ((formDevis.elements.Message.value.match(/https?:\/\/|www\./gi) || []).length > 3) {
+        statut.classList.add('erreur'); statut.textContent = 'Trop de liens dans le message : garde les 3 plus importants 🙏'; return;
+      }
+      let dernierEnvoi = 0;
+      try { dernierEnvoi = Number(localStorage.getItem('dernierEnvoi')) || 0; } catch {}
+      if (Date.now() - dernierEnvoi < 60000) {
+        statut.classList.add('erreur'); statut.textContent = "Ton message vient de partir, attends une minute avant d'en renvoyer un."; return;
+      }
+      bouton.disabled = true;
+      statut.textContent = 'Envoi en cours…';
+      try {
+        const reponse = await fetch(formDevis.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
+          method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(formDevis),
+        });
+        if (!reponse.ok) throw new Error();
+        try { localStorage.setItem('dernierEnvoi', Date.now()); } catch {}
+        formDevis.reset(); calcule();
+        statut.classList.add('ok'); statut.textContent = merci;
+      } catch {
+        statut.classList.add('erreur');
+        statut.textContent = "Oups, l'envoi n'a pas marché. Écris-moi directement à giacomo.ugc@gmail.com";
+      }
+      bouton.disabled = false;
+    });
+  </script>
+</body>
+</html>
