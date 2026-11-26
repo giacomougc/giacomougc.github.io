@@ -66,9 +66,6 @@
     .compteur button:disabled { opacity: .35; cursor: default; }
     .compteur button:focus-visible { outline: 3px solid var(--rouge); outline-offset: 1px; }
     .compteur output { min-width: 36px; text-align: center; font-weight: 700; font-size: 1.1rem; }
-    .passerelle-offres { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: var(--jaune); font-size: .9rem; font-weight: 500; }
-    .passerelle-offres a { font-weight: 700; text-decoration: underline; }
-    .passerelle-offres[hidden] { display: none; }
     .remise-info { margin-top: 14px; font-size: .9rem; font-weight: 600; color: #1f7a44; min-height: 1.4em; }
 
     /* Interrupteurs */
@@ -172,7 +169,7 @@
     <a href="./" class="nav__logo">GIACOMO<span>.</span>UGC</a>
     <nav class="nav__links">
       <a href="./#portfolio">Portfolio</a>
-      <a href="offres">Offres</a>
+      <a href="./#resultats">Résultats</a>
       <a href="#devis" class="btn btn--small">Me contacter</a>
     </nav>
   </header>
@@ -208,7 +205,6 @@
             <span class="compteur" data-champ="videos" data-min="1" data-max="20"><button type="button" data-pas="-1" aria-label="Une vidéo de moins">−</button><output>1</output><button type="button" data-pas="1" aria-label="Une vidéo de plus">+</button></span>
           </div>
           <p class="remise-info" id="remise-info" aria-live="polite"></p>
-          <p class="passerelle-offres" id="passerelle-offres" hidden>🥊 Tu pars sur du volume ? Un parcours complet (égérie, bibliothèque créative, stratégie…) peut être plus rentable. <a href="offres">Trouver mon parcours →</a></p>
         </fieldset>
 
         <fieldset class="etape">
@@ -496,8 +492,6 @@
         : express === n ? delais.express
         : `${delais.normal} (${delais.express} pour ${express > 1 ? 'les vidéos' : 'la vidéo'} en livraison accélérée)`;
       document.getElementById('delai').innerHTML = `⏱️ Livraison : <b>${delai}</b>`;
-
-      document.getElementById('passerelle-offres').hidden = n < 5;
 
       // Message d'encouragement sur la remise
       const info = document.getElementById('remise-info');
