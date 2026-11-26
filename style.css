@@ -560,6 +560,7 @@ span.tag { background: transparent; color: var(--noir); }
 .contact__mail a { color: var(--jaune); text-decoration: underline; }
 .contact__mail { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
 .contact__mail .btn--wa { color: #08321a; text-decoration: none; }
+.contact__mail .contact__adresse { color: var(--jaune); border-color: var(--jaune); text-decoration: none; }
 
 /* Formulaire */
 .formulaire {
