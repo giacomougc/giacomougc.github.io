@@ -138,6 +138,19 @@
     .devis .formulaire__statut.ok { color: #7ee2a8; }
     .devis__intro { color: #bbb; font-size: 1.1rem; max-width: 640px; margin: -28px 0 28px; }
     .devis__ou { color: #999; margin: 28px 0 16px; font-weight: 600; }
+
+    /* Popup Creative Strategy (reprend le style .formulaire de style.css) */
+    .creative { width: min(560px, 92vw); text-align: center; }
+    .creative[open] { animation: creativeOuvre .25s ease-out; }
+    @keyframes creativeOuvre { from { opacity: 0; translate: 0 16px; } }
+    .creative__emoji { font-size: 3rem; line-height: 1; margin-bottom: 10px; }
+    .creative h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 16px; }
+    .creative h2 em { font-style: normal; color: var(--rouge); }
+    .creative__texte { color: #444; margin-bottom: 12px; }
+    .creative__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 22px 0 14px; }
+    .creative__actions .btn--ghost { color: var(--noir); }
+    .creative__non { background: none; border: 0; font: inherit; font-size: .9rem; color: var(--doux); text-decoration: underline; cursor: pointer; }
+    @media (prefers-reduced-motion: reduce) { .creative[open] { animation: none; } }
     .btn--wa { background: #25d366; border-color: #25d366; color: #08321a; }
     .recap .btn + .btn { margin-top: 10px; }
     .recap .btn--ghost { color: #fff; }
@@ -318,6 +331,22 @@
     </section>
   </main>
 
+  <!-- POPUP CREATIVE STRATEGY : s'ouvre une seule fois quand on atteint SEUIL_CREATIVE vidéos -->
+  <dialog class="formulaire creative" id="creative" aria-labelledby="creative-titre">
+    <button class="formulaire__fermer" data-fermer aria-label="Fermer">✕</button>
+    <p class="creative__emoji" aria-hidden="true">🧠</p>
+    <p class="eyebrow">Beaucoup de contenu en vue</p>
+    <h2 id="creative-titre">Et si on passait à la <em>Creative Strategy</em>&nbsp;?</h2>
+    <p class="creative__texte">Avec <b id="creative-nb">5 vidéos</b>, on ne parle plus d'un coup isolé mais d'un vrai combat.
+      La Creative Strategy, c'est un plan de match pour toute ta production : analyse de tes concurrents et des tendances, angles, scripts, plan de tests et suivi des résultats.</p>
+    <p class="creative__texte">Ça peut être plus adapté (et plus rentable) que des vidéos à l'unité. On en discute ?</p>
+    <div class="creative__actions">
+      <a href="#" class="btn btn--wa" id="creative-wa" target="_blank" rel="noopener">💬 En parler sur WhatsApp</a>
+      <a href="#devis" class="btn btn--ghost" id="creative-mail">Par e-mail</a>
+    </div>
+    <button type="button" class="creative__non" data-fermer>Non merci, je continue ma simulation</button>
+  </dialog>
+
   <div class="barre-total" id="barre-total">
     <span>Total HT <strong id="total-mobile">0 €</strong></span>
     <a href="#devis" class="btn btn--small">En parler</a>
@@ -419,6 +448,7 @@
         opts[c.dataset.v][c.dataset.champ] = nouvelle;
       }
       calcule();
+      if (c.dataset.champ === 'videos' && nouvelle >= SEUIL_CREATIVE) proposeCreative();
     });
 
     // Interrupteurs d'une vidéo
@@ -515,6 +545,9 @@
       formDevis.elements['Simulation'].value = texte;
       formDevis.elements['Total estimé'].value = euros(total) + ' HT';
       const messageWa = "Salut Giacomo ! J'ai fait une simulation sur ton site :\n\n" + texte + "\n\nOn peut en parler ?";
+      document.getElementById('creative-nb').textContent = pluriel(n, 'vidéo');
+      document.getElementById('creative-wa').href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(
+        "Salut Giacomo ! Je pars sur " + pluriel(n, 'vidéo') + " et ta Creative Strategy m'intéresse. Voici ma simulation :\n\n" + texte + "\n\nOn en discute ?");
       document.querySelectorAll('a[data-whatsapp]').forEach((a) => { a.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(messageWa); });
     }
 
@@ -522,6 +555,33 @@
     form.addEventListener('change', calcule);
     rendreOptions();
     calcule();
+
+    // ----- Popup Creative Strategy : une seule fois par visite, dès SEUIL_CREATIVE vidéos -----
+    const SEUIL_CREATIVE = 5;
+    const popupCreative = document.getElementById('creative');
+    let creativeVue = false;
+    try { creativeVue = sessionStorage.getItem('creativeVue') === '1'; } catch {}
+    function proposeCreative() {
+      if (creativeVue || popupCreative.open) return;
+      creativeVue = true;
+      try { sessionStorage.setItem('creativeVue', '1'); } catch {}
+      setTimeout(() => popupCreative.showModal(), 450); // laisse le temps de voir le total bouger
+    }
+    popupCreative.querySelectorAll('[data-fermer]').forEach((b) => b.addEventListener('click', () => popupCreative.close()));
+    // Clic à côté de la fenêtre (sur le fond sombre) = fermer
+    popupCreative.addEventListener('click', (e) => {
+      if (e.target !== popupCreative) return;
+      const r = popupCreative.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) popupCreative.close();
+    });
+    document.getElementById('creative-wa').addEventListener('click', () => popupCreative.close());
+    document.getElementById('creative-mail').addEventListener('click', () => {
+      popupCreative.close();
+      const message = formDevis.elements.Message;
+      if (!message.value.includes('Creative Strategy')) {
+        message.value = ('La Creative Strategy m\'intéresse, on peut en discuter ?\n' + message.value).trim();
+      }
+    });
 
     // Mobile : la barre de total se cache quand le récap ou le formulaire est visible
     const barre = document.getElementById('barre-total');
