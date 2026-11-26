@@ -78,6 +78,27 @@
     .bascule input:checked ~ .bascule__piste::after { translate: 22px 0; background: var(--jaune); }
     .bascule input:focus-visible ~ .bascule__piste { outline: 3px solid var(--rouge); outline-offset: 2px; }
 
+    /* Options vidéo par vidéo */
+    .options-videos { display: flex; flex-direction: column; gap: 10px; }
+    .opt-video { border: 2px solid #e4dfd6; border-radius: 14px; background: var(--creme); }
+    .opt-video[open] { border-color: var(--noir); background: #fff; }
+    .opt-video summary {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 18px; cursor: pointer; list-style: none; font-weight: 700;
+    }
+    .opt-video summary::-webkit-details-marker { display: none; }
+    .opt-video summary::after { content: "▾"; font-size: .8em; transition: rotate .2s; }
+    .opt-video[open] summary::after { rotate: 180deg; }
+    .opt-video summary:focus-visible { outline: 3px solid var(--rouge); outline-offset: 2px; border-radius: 12px; }
+    .opt-video__resume { margin-left: auto; font-weight: 500; font-size: .85rem; color: var(--doux); text-align: right; }
+    .opt-video__corps { padding: 0 18px 8px; }
+    .copier {
+      margin-top: 12px; font: inherit; font-weight: 600; font-size: .9rem; cursor: pointer;
+      background: none; border: 2px dashed #c9c1b4; border-radius: 12px; padding: 10px 14px; width: 100%; color: var(--texte);
+    }
+    .copier:hover { border-color: var(--noir); background: var(--creme); }
+    .bascule--seule { margin-top: 18px; border-top: 0; padding: 14px 18px; background: var(--creme); border-radius: 14px; }
+
     /* Récapitulatif */
     .recap { position: sticky; top: 90px; background: var(--noir); color: #fff; border-radius: var(--rayon); padding: 28px; }
     .recap .eyebrow { color: var(--jaune); }
@@ -203,22 +224,11 @@
 
         <fieldset class="etape">
           <legend><span class="etape__num">04</span><span class="etape__titre">Les options</span>
-            <span class="etape__aide">Prix par vidéo.</span></legend>
-          <div class="ligne">
-            <span class="ligne__texte"><b>Hooks supplémentaires</b><small><span data-prix="hook"></span> l'unité, par vidéo. Plusieurs accroches = plus de tests en pub.</small></span>
-            <span class="compteur" data-champ="hooks" data-min="0" data-max="5"><button type="button" data-pas="-1" aria-label="Un hook de moins">−</button><output>0</output><button type="button" data-pas="1" aria-label="Un hook de plus">+</button></span>
-          </div>
-          <label class="bascule"><span class="ligne__texte"><b>Écriture du script</b><small><span data-prix="script"></span> par vidéo. Sinon, tu fournis le script.</small></span>
-            <input type="checkbox" name="script"><span class="bascule__piste"></span></label>
-          <label class="bascule"><span class="ligne__texte"><b>Tournage en duo avec Clémentine</b><small><span data-prix="duo"></span> par vidéo. Format couple, dialogue, mise en situation.</small></span>
-            <input type="checkbox" name="duo"><span class="bascule__piste"></span></label>
-          <label class="bascule"><span class="ligne__texte"><b>Livraison accélérée</b><small><span data-prix="express"></span> par vidéo.</small></span>
-            <input type="checkbox" name="express"><span class="bascule__piste"></span></label>
-          <div class="ligne">
-            <span class="ligne__texte"><b>Whitelisting</b><small>Ta pub diffusée depuis mon compte. <span data-prix="whitelisting"></span> par mois et par vidéo.</small></span>
-            <span class="compteur" data-champ="whitelisting" data-min="0" data-max="12" data-unite="mois"><button type="button" data-pas="-1" aria-label="Un mois de moins">−</button><output>0</output><button type="button" data-pas="1" aria-label="Un mois de plus">+</button></span>
-          </div>
-          <label class="bascule"><span class="ligne__texte"><b>C'est notre première collaboration</b><small>Un hook supplémentaire offert 🎁</small></span>
+            <span class="etape__aide">Vidéo par vidéo : chaque vidéo a ses propres options.</span></legend>
+          <!-- Un panneau par vidéo, généré par le script (fonction rendreOptions) -->
+          <div class="options-videos" id="options-videos"></div>
+          <button type="button" class="copier" id="copier" hidden>↧ Appliquer les options de la vidéo 1 à toutes les vidéos</button>
+          <label class="bascule bascule--seule"><span class="ligne__texte"><b>C'est notre première collaboration</b><small>Un hook supplémentaire offert 🎁</small></span>
             <input type="checkbox" name="premiere"><span class="bascule__piste"></span></label>
         </fieldset>
 
@@ -332,37 +342,105 @@
     };
 
     // Numéro WhatsApp au format international, sans + ni espaces (ex. 33612345678). Vide = boutons WhatsApp masqués.
-    const WHATSAPP = '';
+    const WHATSAPP = '33667972798';
     document.querySelectorAll('[data-whatsapp]').forEach((el) => { el.hidden = !WHATSAPP; });
 
     const euros = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' €';
     const form = document.getElementById('simu');
-    const etat = { videos: 1, hooks: 0, whitelisting: 0 };
+    const etat = { videos: 1 };
+    // Options de chaque vidéo (une entrée par vidéo)
+    const optionsVide = () => ({ hooks: 0, script: false, duo: false, express: false, whitelisting: 0 });
+    const opts = [optionsVide()];
+    const LIMITES = { videos: [1, 20], hooks: [0, 5], whitelisting: [0, 12] };
+    const pluriel = (n, mot, s = 's') => `${n} ${mot}${n > 1 ? s : ''}`;
 
     // Affiche les prix écrits dans TARIFS à côté de chaque choix
-    document.querySelectorAll('[data-prix]').forEach((el) => {
+    const affichePrix = (racine) => racine.querySelectorAll('[data-prix]').forEach((el) => {
       const prix = el.dataset.prix.split('.').reduce((o, k) => o[k], TARIFS);
       el.textContent = euros(prix) + (el.dataset.suffixe || '');
     });
+    affichePrix(document);
 
-    // Compteurs + / −
-    document.querySelectorAll('.compteur').forEach((c) => {
-      const champ = c.dataset.champ, min = +c.dataset.min, max = +c.dataset.max;
-      const [moins, plus] = c.querySelectorAll('button');
-      const sortie = c.querySelector('output');
-      const maj = () => {
-        sortie.textContent = etat[champ];
-        moins.disabled = etat[champ] <= min;
-        plus.disabled = etat[champ] >= max;
-      };
-      c.addEventListener('click', (e) => {
-        const pas = e.target.closest('button')?.dataset.pas;
-        if (!pas) return;
-        etat[champ] = Math.min(max, Math.max(min, etat[champ] + +pas));
-        maj(); calcule();
-      });
-      maj();
+    // Compteur + / − : data-champ = la valeur, data-v = numéro de la vidéo (absent pour le nombre de vidéos)
+    const compteur = (champ, v, aide) => `
+      <span class="compteur" data-champ="${champ}"${v === undefined ? '' : ` data-v="${v}"`}>
+        <button type="button" data-pas="-1" aria-label="${aide} : moins">−</button><output></output><button type="button" data-pas="1" aria-label="${aide} : plus">+</button>
+      </span>`;
+    const valeur = (c) => c.dataset.v === undefined ? etat[c.dataset.champ] : opts[c.dataset.v][c.dataset.champ];
+    const majCompteurs = () => document.querySelectorAll('.compteur').forEach((c) => {
+      const [min, max] = LIMITES[c.dataset.champ];
+      const val = valeur(c);
+      c.querySelector('output').textContent = val;
+      c.querySelector('[data-pas="-1"]').disabled = val <= min;
+      c.querySelector('[data-pas="1"]').disabled = val >= max;
     });
+
+    // Un panneau d'options par vidéo
+    const zoneOptions = document.getElementById('options-videos');
+    function rendreOptions() {
+      const ouverts = [...zoneOptions.querySelectorAll('details')].map((d) => d.open);
+      zoneOptions.innerHTML = opts.map((o, v) => `
+        <details class="opt-video" ${(ouverts[v] ?? (v === 0 || v >= ouverts.length)) ? 'open' : ''}>
+          <summary>Vidéo ${v + 1}<span class="opt-video__resume" data-resume="${v}"></span></summary>
+          <div class="opt-video__corps">
+            <div class="ligne">
+              <span class="ligne__texte"><b>Hooks supplémentaires</b><small><span data-prix="hook"></span> l'unité. Plusieurs accroches = plus de tests en pub.</small></span>
+              ${compteur('hooks', v, `Hooks supplémentaires de la vidéo ${v + 1}`)}
+            </div>
+            <label class="bascule"><span class="ligne__texte"><b>Écriture du script</b><small><span data-prix="script"></span>. Sinon, tu fournis le script.</small></span>
+              <input type="checkbox" data-v="${v}" data-opt="script" ${o.script ? 'checked' : ''}><span class="bascule__piste"></span></label>
+            <label class="bascule"><span class="ligne__texte"><b>Tournage en duo avec Clémentine</b><small><span data-prix="duo"></span>. Format couple, dialogue, mise en situation.</small></span>
+              <input type="checkbox" data-v="${v}" data-opt="duo" ${o.duo ? 'checked' : ''}><span class="bascule__piste"></span></label>
+            <label class="bascule"><span class="ligne__texte"><b>Livraison accélérée</b><small><span data-prix="express"></span>.</small></span>
+              <input type="checkbox" data-v="${v}" data-opt="express" ${o.express ? 'checked' : ''}><span class="bascule__piste"></span></label>
+            <div class="ligne">
+              <span class="ligne__texte"><b>Whitelisting (mois)</b><small>Ta pub diffusée depuis mon compte. <span data-prix="whitelisting"></span> par mois.</small></span>
+              ${compteur('whitelisting', v, `Mois de whitelisting de la vidéo ${v + 1}`)}
+            </div>
+          </div>
+        </details>`).join('');
+      affichePrix(zoneOptions);
+      document.getElementById('copier').hidden = opts.length < 2;
+    }
+
+    // Clics sur les + / −
+    form.addEventListener('click', (e) => {
+      const bouton = e.target.closest('[data-pas]');
+      if (!bouton) return;
+      const c = bouton.closest('.compteur');
+      const [min, max] = LIMITES[c.dataset.champ];
+      const nouvelle = Math.min(max, Math.max(min, valeur(c) + +bouton.dataset.pas));
+      if (c.dataset.v === undefined) {
+        etat[c.dataset.champ] = nouvelle;
+        while (opts.length < nouvelle) opts.push(optionsVide());
+        opts.length = nouvelle;
+        rendreOptions();
+      } else {
+        opts[c.dataset.v][c.dataset.champ] = nouvelle;
+      }
+      calcule();
+    });
+
+    // Interrupteurs d'une vidéo
+    form.addEventListener('change', (e) => {
+      if (e.target.dataset.opt) opts[e.target.dataset.v][e.target.dataset.opt] = e.target.checked;
+    });
+
+    document.getElementById('copier').addEventListener('click', () => {
+      for (let v = 1; v < opts.length; v++) opts[v] = { ...opts[0] };
+      rendreOptions(); calcule();
+    });
+
+    // Liste lisible des options d'une vidéo
+    const resumeOptions = (o) => [
+      o.hooks ? pluriel(o.hooks, 'hook') + ' en plus' : '',
+      o.script ? 'script' : '',
+      o.duo ? 'duo' : '',
+      o.express ? 'livraison accélérée' : '',
+      o.whitelisting ? `whitelisting ${o.whitelisting} mois` : '',
+    ].filter(Boolean);
+    const prixOptions = (o) => o.hooks * TARIFS.hook + o.script * TARIFS.script + o.duo * TARIFS.duo
+      + o.express * TARIFS.express + o.whitelisting * TARIFS.whitelisting;
 
     function calcule() {
       const d = new FormData(form);
@@ -370,7 +448,6 @@
       const format = d.get('format');
       const droits = +d.get('droits');
       const produit = d.get('produit');
-      const express = d.has('express');
 
       const lignes = [];
       const ajoute = (libelle, montant) => { if (montant) lignes.push({ libelle, montant }); };
@@ -383,12 +460,24 @@
       if (remise) ajoute(`Remise pack −${remise.taux * 100} %`, -Math.round(base * remise.taux * 100) / 100);
 
       if (droits) ajoute(`Droits pub ${droits === 12 ? '1 an' : droits + ' mois'} × ${n}`, TARIFS.droits[droits] * n);
-      if (etat.hooks) ajoute(`${etat.hooks} hook${etat.hooks > 1 ? 's' : ''} en plus × ${n} vidéo${n > 1 ? 's' : ''}`, TARIFS.hook * etat.hooks * n);
-      if (d.has('premiere') && etat.hooks) ajoute('Hook offert (1re collaboration)', -TARIFS.hook);
-      if (d.has('script')) ajoute(`Écriture du script × ${n}`, TARIFS.script * n);
-      if (d.has('duo')) ajoute(`Duo avec Clémentine × ${n}`, TARIFS.duo * n);
-      if (express) ajoute(`Livraison accélérée × ${n}`, TARIFS.express * n);
-      if (etat.whitelisting) ajoute(`Whitelisting ${etat.whitelisting} mois × ${n}`, TARIFS.whitelisting * etat.whitelisting * n);
+
+      // Options : additionnées sur toutes les vidéos
+      const somme = (cle) => opts.reduce((s, o) => s + +o[cle], 0);
+      const hooks = somme('hooks'), scripts = somme('script'), duos = somme('duo'), express = somme('express'), wl = somme('whitelisting');
+      ajoute(`${pluriel(hooks, 'hook')} en plus`, TARIFS.hook * hooks);
+      if (d.has('premiere') && hooks) ajoute('Hook offert (1re collaboration)', -TARIFS.hook);
+      ajoute(`Écriture du script × ${scripts}`, TARIFS.script * scripts);
+      ajoute(`Duo avec Clémentine × ${duos}`, TARIFS.duo * duos);
+      ajoute(`Livraison accélérée × ${express}`, TARIFS.express * express);
+      ajoute(`Whitelisting (${wl} mois au total)`, TARIFS.whitelisting * wl);
+
+      // Résumé affiché sur chaque panneau vidéo
+      opts.forEach((o, v) => {
+        const el = zoneOptions.querySelector(`[data-resume="${v}"]`);
+        const liste = resumeOptions(o);
+        el.textContent = liste.length ? `${liste.join(' · ')} · +${euros(prixOptions(o))}` : 'Aucune option';
+      });
+      majCompteurs();
 
       const total = lignes.reduce((s, l) => s + l.montant, 0);
 
@@ -398,7 +487,10 @@
       document.getElementById('total-mobile').textContent = euros(total);
       document.getElementById('par-video').textContent = n > 1 ? `soit ${euros(Math.round(total / n * 100) / 100)} par vidéo` : '';
 
-      const delai = TARIFS.delais[produit][express ? 'express' : 'normal'];
+      const delais = TARIFS.delais[produit];
+      const delai = express === 0 ? delais.normal
+        : express === n ? delais.express
+        : `${delais.normal} (${delais.express} pour ${express > 1 ? 'les vidéos' : 'la vidéo'} en livraison accélérée)`;
       document.getElementById('delai').innerHTML = `⏱️ Livraison : <b>${delai}</b>`;
 
       // Message d'encouragement sur la remise
@@ -413,8 +505,12 @@
         produit === 'classique' ? 'Produit classique' : produit === 'jeu' ? 'Jeu de société' : 'Jeu de société déjà connu',
         d.has('premiere') ? 'Première collaboration' : '',
       ].filter(Boolean);
+      // Détail des options vidéo par vidéo (seulement s'il y en a)
+      const detail = opts.some((o) => resumeOptions(o).length)
+        ? ['', 'Détail des options :', ...opts.map((o, v) => `Vidéo ${v + 1} : ${resumeOptions(o).join(', ') || 'aucune option'}`), '']
+        : [];
       const texte = lignes.map((l) => `• ${l.libelle} : ${l.montant < 0 ? '−' + euros(-l.montant) : euros(l.montant)}`)
-        .concat(options.map((o) => `• ${o}`), `• Délai : ${delai}`, `Total estimé : ${euros(total)} HT`).join('\n');
+        .concat(options.map((o) => `• ${o}`), `• Délai : ${delai}`, detail, `Total estimé : ${euros(total)} HT`).flat().join('\n');
       document.getElementById('devis-recap').textContent = texte;
       formDevis.elements['Simulation'].value = texte;
       formDevis.elements['Total estimé'].value = euros(total) + ' HT';
@@ -424,6 +520,7 @@
 
     const formDevis = document.getElementById('form-devis');
     form.addEventListener('change', calcule);
+    rendreOptions();
     calcule();
 
     // Mobile : la barre de total se cache quand le récap ou le formulaire est visible
