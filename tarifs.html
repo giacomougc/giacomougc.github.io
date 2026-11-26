@@ -151,7 +151,7 @@
     <section class="section tarifs-hero">
       <p class="eyebrow">Ta vidéo, tes options, ton budget</p>
       <h1>Combien coûte <em>ta prochaine vidéo UGC&nbsp;?</em></h1>
-      <p>Choisis ta formule et les options utiles à ton projet : le prix se calcule en direct.
+      <p>Choisis ta formule et les options utiles à ton projet : le prix (HT) se calcule en direct.
         Le brief, les livrables, les droits et le planning sont confirmés ensemble avant de lancer quoi que ce soit.</p>
     </section>
 
@@ -233,11 +233,11 @@
       <aside class="recap" aria-labelledby="recap-titre">
         <p class="eyebrow" id="recap-titre">Ton estimation</p>
         <ul class="recap__lignes" id="recap-lignes"></ul>
-        <div class="recap__total"><span>Total</span><strong id="total">0 €</strong></div>
+        <div class="recap__total"><span>Total HT</span><strong id="total">0 €</strong></div>
         <p class="recap__par" id="par-video"></p>
         <p class="recap__delai" id="delai"></p>
         <a href="#devis" class="btn">Recevoir mon devis</a>
-        <p class="recap__note">Estimation indicative. Un retournage après validation du script est une nouvelle prestation, chiffrée à part.</p>
+        <p class="recap__note">Prix hors taxes. Estimation indicative. Un retournage après validation du script est une nouvelle prestation, chiffrée à part.</p>
       </aside>
     </section>
 
@@ -299,7 +299,7 @@
   </main>
 
   <div class="barre-total" id="barre-total">
-    <span>Total estimé <strong id="total-mobile">0 €</strong></span>
+    <span>Total HT <strong id="total-mobile">0 €</strong></span>
     <a href="#devis" class="btn btn--small">Mon devis</a>
   </div>
 
@@ -400,10 +400,10 @@
         d.has('premiere') ? 'Première collaboration' : '',
       ].filter(Boolean);
       const texte = lignes.map((l) => `• ${l.libelle} : ${l.montant < 0 ? '−' + euros(-l.montant) : euros(l.montant)}`)
-        .concat(options.map((o) => `• ${o}`), `• Délai : ${delai}`, `Total estimé : ${euros(total)}`).join('\n');
+        .concat(options.map((o) => `• ${o}`), `• Délai : ${delai}`, `Total estimé : ${euros(total)} HT`).join('\n');
       document.getElementById('devis-recap').textContent = texte;
       formDevis.elements['Simulation'].value = texte;
-      formDevis.elements['Total estimé'].value = euros(total);
+      formDevis.elements['Total estimé'].value = euros(total) + ' HT';
     }
 
     const formDevis = document.getElementById('form-devis');
