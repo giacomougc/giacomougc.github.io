@@ -108,13 +108,19 @@
     .inclus__non li::before { content: "✕"; color: var(--rouge); font-weight: 700; }
     .section h2.petit { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 32px; }
 
-    /* Formulaire de devis */
+    /* Prise de contact */
     .devis .champs { max-width: 760px; }
     .devis__recap { max-width: 760px; background: #1f1f1f; color: #ddd; border-radius: 12px; padding: 16px 18px; margin-bottom: 24px; font-size: .9rem; white-space: pre-line; }
     .devis .champs label { color: #fff; }
     .devis .btn { cursor: pointer; font: inherit; font-weight: 700; }
     .devis .btn:disabled { opacity: .6; cursor: wait; }
     .devis .formulaire__statut.ok { color: #7ee2a8; }
+    .devis__intro { color: #bbb; font-size: 1.1rem; max-width: 640px; margin: -28px 0 28px; }
+    .devis__ou { color: #999; margin: 28px 0 16px; font-weight: 600; }
+    .btn--wa { background: #25d366; border-color: #25d366; color: #08321a; }
+    .recap .btn + .btn { margin-top: 10px; }
+    .recap .btn--ghost { color: #fff; }
+    [data-whatsapp][hidden] { display: none !important; }
 
     @media (max-width: 960px) {
       .simu { grid-template-columns: 1fr; }
@@ -143,7 +149,7 @@
     <nav class="nav__links">
       <a href="./#portfolio">Portfolio</a>
       <a href="./#resultats">Résultats</a>
-      <a href="#devis" class="btn btn--small">Demander mon devis</a>
+      <a href="#devis" class="btn btn--small">Me contacter</a>
     </nav>
   </header>
 
@@ -236,8 +242,9 @@
         <div class="recap__total"><span>Total HT</span><strong id="total">0 €</strong></div>
         <p class="recap__par" id="par-video"></p>
         <p class="recap__delai" id="delai"></p>
-        <a href="#devis" class="btn">Recevoir mon devis</a>
-        <p class="recap__note">Prix hors taxes. Estimation indicative. Un retournage après validation du script est une nouvelle prestation, chiffrée à part.</p>
+        <a href="#" class="btn btn--wa" data-whatsapp target="_blank" rel="noopener">💬 En parler sur WhatsApp</a>
+        <a href="#devis" class="btn btn--ghost">Me contacter par e-mail</a>
+        <p class="recap__note">Prix hors taxes. C'est une estimation pour te donner une idée de mes tarifs : on affine ensemble selon ton projet. Un retournage après validation du script est une nouvelle prestation, chiffrée à part.</p>
       </aside>
     </section>
 
@@ -266,13 +273,16 @@
       </div>
     </section>
 
-    <!-- DEMANDE DE DEVIS : envoi par FormSubmit, comme le formulaire de l'accueil -->
+    <!-- PRISE DE CONTACT : WhatsApp ou e-mail (FormSubmit, comme le formulaire de l'accueil) -->
     <section class="section section--dark devis" id="devis">
       <p class="eyebrow">Dernier round</p>
-      <h2>Reçois ton devis</h2>
+      <h2>On en parle&nbsp;?</h2>
+      <p class="devis__intro">Tu as maintenant une idée de mes tarifs. Chaque projet est différent : écris-moi avec ton estimation, on en discute et on ajuste ensemble.</p>
       <p class="devis__recap" id="devis-recap"></p>
+      <a href="#" class="btn btn--wa" data-whatsapp target="_blank" rel="noopener">💬 M'écrire sur WhatsApp</a>
+      <p class="devis__ou" data-whatsapp>Ou par e-mail :</p>
       <form id="form-devis" action="https://formsubmit.co/giacomo.ugc@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Demande de devis depuis le simulateur UGC">
+        <input type="hidden" name="_subject" value="Prise de contact depuis le simulateur de tarifs UGC">
         <input type="hidden" name="_template" value="table">
         <input type="text" name="_honey" class="piege" tabindex="-1" autocomplete="off" aria-hidden="true">
         <input type="hidden" name="_blacklist" value="casino, viagra, cialis, backlinks, seo services, porn, betting, bit.ly">
@@ -292,7 +302,7 @@
             <textarea name="Message" rows="4" maxlength="3000" placeholder="Le produit, l'objectif, la date de diffusion…"></textarea>
           </label>
         </div>
-        <button type="submit" class="btn">Envoyer ma demande</button>
+        <button type="submit" class="btn">Envoyer mon message</button>
         <p class="formulaire__statut" role="status"></p>
       </form>
     </section>
@@ -300,7 +310,7 @@
 
   <div class="barre-total" id="barre-total">
     <span>Total HT <strong id="total-mobile">0 €</strong></span>
-    <a href="#devis" class="btn btn--small">Mon devis</a>
+    <a href="#devis" class="btn btn--small">En parler</a>
   </div>
 
   <footer class="footer">
@@ -320,6 +330,10 @@
         'jeu-connu': { normal: '1 semaine',                             express: '2 jours ouvrés' },
       },
     };
+
+    // Numéro WhatsApp au format international, sans + ni espaces (ex. 33612345678). Vide = boutons WhatsApp masqués.
+    const WHATSAPP = '';
+    document.querySelectorAll('[data-whatsapp]').forEach((el) => { el.hidden = !WHATSAPP; });
 
     const euros = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' €';
     const form = document.getElementById('simu');
@@ -394,7 +408,7 @@
         ? `✓ Remise de ${remise.taux * 100} % appliquée` + (prochaine ? ` · encore ${prochaine.des - n} vidéo${prochaine.des - n > 1 ? 's' : ''} pour −${prochaine.taux * 100} %` : '')
         : prochaine ? `Encore ${prochaine.des - n} vidéo${prochaine.des - n > 1 ? 's' : ''} pour −${prochaine.taux * 100} %` : '';
 
-      // Récap texte pour le devis (envoyé dans l'e-mail)
+      // Récap texte de l'estimation (envoyé dans l'e-mail et le message WhatsApp)
       const options = [
         produit === 'classique' ? 'Produit classique' : produit === 'jeu' ? 'Jeu de société' : 'Jeu de société déjà connu',
         d.has('premiere') ? 'Première collaboration' : '',
@@ -404,6 +418,8 @@
       document.getElementById('devis-recap').textContent = texte;
       formDevis.elements['Simulation'].value = texte;
       formDevis.elements['Total estimé'].value = euros(total) + ' HT';
+      const messageWa = "Salut Giacomo ! J'ai fait une simulation sur ton site :\n\n" + texte + "\n\nOn peut en parler ?";
+      document.querySelectorAll('a[data-whatsapp]').forEach((a) => { a.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(messageWa); });
     }
 
     const formDevis = document.getElementById('form-devis');
@@ -421,14 +437,14 @@
     obs.observe(document.getElementById('devis'));
     obs.observe(document.querySelector('.tarifs-hero'));
 
-    // Envoi du devis (mêmes protections anti-spam que le formulaire de l'accueil)
+    // Envoi du message (mêmes protections anti-spam que le formulaire de l'accueil)
     const ouvertLe = Date.now();
     const statut = formDevis.querySelector('.formulaire__statut');
     formDevis.addEventListener('submit', async (e) => {
       e.preventDefault();
       const bouton = formDevis.querySelector('button[type="submit"]');
       statut.className = 'formulaire__statut';
-      const merci = 'Merci, ta demande est bien partie ! Je te réponds très vite avec ton devis 🫡';
+      const merci = "Merci, ton message est bien parti ! Je te réponds très vite pour qu'on en parle 🫡";
       if (formDevis.elements._honey.value !== '' || Date.now() - ouvertLe < 4000) {
         formDevis.reset(); calcule(); statut.classList.add('ok'); statut.textContent = merci; return;
       }
@@ -438,7 +454,7 @@
       let dernierEnvoi = 0;
       try { dernierEnvoi = Number(localStorage.getItem('dernierEnvoi')) || 0; } catch {}
       if (Date.now() - dernierEnvoi < 60000) {
-        statut.classList.add('erreur'); statut.textContent = "Ta demande vient de partir, attends une minute avant d'en renvoyer une."; return;
+        statut.classList.add('erreur'); statut.textContent = "Ton message vient de partir, attends une minute avant d'en renvoyer un."; return;
       }
       bouton.disabled = true;
       statut.textContent = 'Envoi en cours…';
