@@ -558,6 +558,8 @@ span.tag { background: transparent; color: var(--noir); }
 
 .contact__mail { margin-top: 24px; color: #bbb; }
 .contact__mail a { color: var(--jaune); text-decoration: underline; }
+.contact__mail { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+.contact__mail .btn--wa { color: #08321a; text-decoration: none; }
 
 /* Formulaire */
 .formulaire {
