@@ -105,6 +105,7 @@
     .recap__lignes { list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: .92rem; margin-bottom: 18px; }
     .recap__lignes li { display: flex; justify-content: space-between; gap: 12px; }
     .recap__lignes li span:first-child { color: #bbb; }
+    .recap__lignes li span:last-child { white-space: nowrap; }
     .recap__lignes .moins span:last-child { color: #7ee2a8; }
     .recap__total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #333; padding-top: 16px; }
     .recap__total span { font-weight: 600; }
@@ -374,7 +375,7 @@
     const WHATSAPP = '33667972798';
     document.querySelectorAll('[data-whatsapp]').forEach((el) => { el.hidden = !WHATSAPP; });
 
-    const euros = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' €';
+    const euros = (n) => n.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' €';
     const form = document.getElementById('simu');
     const etat = { videos: 1 };
     // Options de chaque vidéo (une entrée par vidéo)
